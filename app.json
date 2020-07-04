@@ -1,0 +1,12 @@
+{
+  "name": "eCommerceApp",
+  "displayName": "eCommerceApp",
+  "expo": {
+    "name": "eCommerceApp",
+    "slug": "eCommerceApp",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
