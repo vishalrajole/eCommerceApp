@@ -2,6 +2,7 @@ import React from "react";
 import { Platform } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import ProductsOverviewScreen from "../screens/shop/ProductOverviewScreen";
+import ProductDetailsScreen from "../screens/shop/ProductDetailsScreen";
 import colors from "../styles/colors";
 
 const Stack = createStackNavigator();
@@ -25,6 +26,13 @@ const ProductsNavigator = () => {
         options={{
           headerShown: true,
           title: "All Products",
+        }}
+      />
+      <Stack.Screen
+        name="ProductDetails"
+        component={ProductDetailsScreen}
+        options={{
+          headerShown: true,
         }}
       />
     </Stack.Navigator>
