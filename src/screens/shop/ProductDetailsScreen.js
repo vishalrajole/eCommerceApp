@@ -7,9 +7,10 @@ import {
   Button,
   View,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Colors from "../../styles/colors";
 import Variables from "../../styles/variables";
+import { addToCart } from "../../store/actions/cart";
 
 const ProductDetailsScreen = (props) => {
   const { route } = props;
@@ -18,6 +19,7 @@ const ProductDetailsScreen = (props) => {
   const selectedProduct = useSelector((state) =>
     state.products.availableProducts.find((product) => product.id === productId)
   );
+  const dispatch = useDispatch();
 
   props.navigation.setOptions({ title: productTitle });
 
@@ -31,7 +33,9 @@ const ProductDetailsScreen = (props) => {
         <Button
           color={Colors.primary}
           title="Add to Cart"
-          onPress={() => {}}
+          onPress={() => {
+            dispatch(addToCart(selectedProduct));
+          }}
         ></Button>
       </View>
       <Text style={styles.price}>${selectedProduct.price.toFixed(2)}</Text>
@@ -50,12 +54,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   price: {
+    fontFamily: "open-sans-bold",
     fontSize: Variables.PRIMARY_FONT_SIZE,
     color: "#888",
     textAlign: "center",
     marginVertical: 20,
   },
   description: {
+    fontFamily: "open-sans",
     fontSize: Variables.SECONDARY_FONT_SIZE,
     textAlign: "center",
     marginVertical: 20,
