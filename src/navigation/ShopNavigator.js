@@ -18,6 +18,12 @@ const ProductsNavigator = () => {
         headerTitleStyle: {
           fontWeight: "bold",
         },
+        headerTitleStyle: {
+          fontFamily: "open-sans-bold",
+        },
+        headerBackTitleStyle: {
+          fontFamily: "open-sans",
+        },
       }}
     >
       <Stack.Screen

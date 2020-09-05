@@ -4,9 +4,11 @@ import thunkMiddleware from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import productsReducer from "./reducers/products";
+import cartReducer from "./reducers/cart";
 
 const rootReducer = combineReducers({
   products: productsReducer,
+  cart: cartReducer,
 });
 
 export default function configureStore(preloadedState) {
