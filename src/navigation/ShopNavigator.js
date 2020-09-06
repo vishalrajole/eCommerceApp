@@ -1,9 +1,14 @@
 import React from "react";
 import { Platform } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { Ionicons } from "@expo/vector-icons";
+
 import ProductsOverviewScreen from "../screens/shop/ProductOverviewScreen";
 import ProductDetailsScreen from "../screens/shop/ProductDetailsScreen";
-import colors from "../styles/colors";
+import CartScreen from "../screens/shop/CartScreen";
+import { CustomHeaderButton } from "../components/HeaderButton";
+import Colors from "../styles/colors";
 
 const Stack = createStackNavigator();
 
@@ -12,9 +17,9 @@ const ProductsNavigator = () => {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: Platform === "android" ? colors.primary : "",
+          backgroundColor: Platform.OS === "android" ? Colors.primary : "",
         },
-        headerTintColor: Platform === "android" ? "white" : colors.primary,
+        headerTintColor: Platform.OS === "android" ? "white" : Colors.primary,
         headerTitleStyle: {
           fontWeight: "bold",
         },
@@ -29,16 +34,51 @@ const ProductsNavigator = () => {
       <Stack.Screen
         name="ProductsOverview"
         component={ProductsOverviewScreen}
-        options={{
-          headerShown: true,
+        options={({ routes, navigation }) => ({
           title: "All Products",
-        }}
+          headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+              <Item
+                title="Cart"
+                iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
+                onPress={() => {
+                  navigation.navigate("CartScreen");
+                }}
+              ></Item>
+            </HeaderButtons>
+          ),
+        })}
       />
       <Stack.Screen
         name="ProductDetails"
         component={ProductDetailsScreen}
         options={{
-          headerShown: true,
+          headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+              <Item
+                title="Cart"
+                iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
+                onPress={() => {}}
+              ></Item>
+            </HeaderButtons>
+          ),
+        }}
+      />
+
+      <Stack.Screen
+        name="CartScreen"
+        component={CartScreen}
+        options={{
+          title: "Cart",
+          headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+              <Item
+                title="Cart"
+                iconName={Platform.OS === "android" ? "md-cart" : "ioc-cart"}
+                onPress={() => {}}
+              ></Item>
+            </HeaderButtons>
+          ),
         }}
       />
     </Stack.Navigator>
