@@ -1,7 +1,7 @@
 import React from "react";
 import { FlatList, Text } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import ProductItem from "../../components/shop/ProductItem";
+import ProductItem from "../../components/ProductItem";
 import { addToCart } from "../../store/actions/cart";
 
 const ProductOverviewScreen = (props) => {
@@ -32,4 +32,7 @@ const ProductOverviewScreen = (props) => {
   );
 };
 
+ProductOverviewScreen.navigationOptions = {
+  headerTitle: "sdsdf",
+};
 export default ProductOverviewScreen;
