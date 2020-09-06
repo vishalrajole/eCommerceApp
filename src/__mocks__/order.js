@@ -8,7 +8,7 @@ class Order {
   }
 
   get formattedDate() {
-    return moment(this.date).format("MM DD YYYY hh:mm");
+    return moment(this.date).format("MM-DD-YYYY hh:mm");
   }
 }
 
