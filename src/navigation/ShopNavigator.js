@@ -2,12 +2,11 @@ import React from "react";
 import { Platform } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import { Ionicons } from "@expo/vector-icons";
-
 import ProductsOverviewScreen from "../screens/shop/ProductOverviewScreen";
 import ProductDetailsScreen from "../screens/shop/ProductDetailsScreen";
 import CartScreen from "../screens/shop/CartScreen";
-import { CustomHeaderButton } from "../components/HeaderButton";
+import CustomHeaderButton from "../components/HeaderButton";
+
 import Colors from "../styles/colors";
 
 const Stack = createStackNavigator();
