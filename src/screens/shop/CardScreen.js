@@ -79,6 +79,7 @@ const DrawerScreen = () => (
 );
 
 const RootStack = createStackNavigator();
+
 const RootStackScreen = ({ userToken }) => (
   <RootStack.Navigator headerMode="none">
     {userToken ? (
