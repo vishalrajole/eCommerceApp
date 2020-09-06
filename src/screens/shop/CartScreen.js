@@ -52,6 +52,7 @@ const CartScreen = (props) => {
         renderItem={(itemData) => (
           <CartItem
             product={itemData.item}
+            showDeleteButton={true}
             onDelete={() => {
               dispatch(removeFromCart(itemData.item.productId));
             }}

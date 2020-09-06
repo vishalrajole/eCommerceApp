@@ -68,17 +68,19 @@ const ProductsNavigator = () => {
       <Stack.Screen
         name="ProductDetails"
         component={ProductDetailsScreen}
-        options={{
+        options={({ routes, navigation }) => ({
           headerRight: () => (
             <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
               <Item
                 title="Cart"
                 iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
-                onPress={() => {}}
+                onPress={() => {
+                  navigation.navigate("CartScreen");
+                }}
               ></Item>
             </HeaderButtons>
           ),
-        }}
+        })}
       />
 
       <Stack.Screen
@@ -86,15 +88,6 @@ const ProductsNavigator = () => {
         component={CartScreen}
         options={{
           title: "Cart",
-          headerRight: () => (
-            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-              <Item
-                title="Cart"
-                iconName={Platform.OS === "android" ? "md-cart" : "ioc-cart"}
-                onPress={() => {}}
-              ></Item>
-            </HeaderButtons>
-          ),
         }}
       />
     </Stack.Navigator>
