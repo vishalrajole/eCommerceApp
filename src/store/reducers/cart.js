@@ -1,4 +1,4 @@
-import { ADD_TO_CART, REMOVE_FROM_CART } from "../actions/cart";
+import { ADD_TO_CART, REMOVE_FROM_CART, CLEAR_CART } from "../actions/cart";
 import CartItem from "../../__mocks__/cart-item";
 
 const initialState = {
@@ -60,6 +60,9 @@ export default (state = initialState, action) => {
         items: updatedCartItems,
         cartTotalAmount: state.cartTotalAmount - selectedProduct.unitPrice,
       };
+    }
+    case CLEAR_CART: {
+      return initialState;
     }
   }
   return state;

@@ -3,7 +3,7 @@ import { View, Button, StyleSheet, Text, FlatList } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import CartItem from "../../components/CartItem";
 import Colors from "../../styles/colors";
-import { removeFromCart } from "../../store/actions/cart";
+import { removeFromCart, clearCart } from "../../store/actions/cart";
 import { orderNow } from "../../store/actions/order";
 
 const CartScreen = (props) => {
@@ -42,6 +42,8 @@ const CartScreen = (props) => {
                 orderAmount: cartTotalAmount,
               })
             );
+            dispatch(clearCart());
+            props.navigation.navigate("Orders");
           }}
         />
       </View>
