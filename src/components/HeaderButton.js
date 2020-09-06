@@ -5,7 +5,6 @@ import { Platform } from "react-native";
 import Colors from "../styles/colors";
 
 const CustomHeaderButton = (props) => {
-  console.log("Plst: ", Platform.OS);
   return (
     <HeaderButton
       {...props}

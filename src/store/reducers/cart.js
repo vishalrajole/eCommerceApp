@@ -1,4 +1,4 @@
-import { ADD_TO_CART } from "../actions/cart";
+import { ADD_TO_CART, REMOVE_FROM_CART } from "../actions/cart";
 import CartItem from "../../__mocks__/cart-item";
 
 const initialState = {
@@ -32,6 +32,33 @@ export default (state = initialState, action) => {
         ...state,
         items: { ...state.items, [product.id]: itemToAdd },
         cartTotalAmount: state.cartTotalAmount + product.price,
+      };
+    }
+    case REMOVE_FROM_CART: {
+      const selectedProduct = state.items[action.productId];
+      const quantity = selectedProduct.quantity;
+      let updatedCartItems;
+
+      if (quantity > 1) {
+        const updatedCartItem = new CartItem({
+          quantity: selectedProduct.quantity - 1,
+          unitPrice: selectedProduct.unitPrice,
+          title: selectedProduct.title,
+          amount: selectedProduct.amount - selectedProduct.unitPrice,
+        });
+        updatedCartItems = {
+          ...state.items,
+          [action.productId]: updatedCartItem,
+        };
+      } else {
+        updatedCartItems = { ...state.items };
+        delete updatedCartItems[action.productId];
+      }
+
+      return {
+        ...state,
+        items: updatedCartItems,
+        cartTotalAmount: state.cartTotalAmount - selectedProduct.unitPrice,
       };
     }
   }
