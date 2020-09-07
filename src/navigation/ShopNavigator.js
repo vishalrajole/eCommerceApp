@@ -8,6 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import ProductsOverviewScreen from "../screens/shop/ProductOverviewScreen";
 import ProductDetailsScreen from "../screens/shop/ProductDetailsScreen";
+import UserProductScreen from "../screens/user/UserProductScreen";
 import CartScreen from "../screens/shop/CartScreen";
 import OrdersScreen from "../screens/shop/OrdersScreen";
 import CustomHeaderButton from "../components/HeaderButton";
@@ -118,6 +119,31 @@ const OrdersStackNavigator = () => {
   );
 };
 
+const AdminStackNavigator = () => {
+  return (
+    <Stack.Navigator screenOptions={defaultScreenOptions}>
+      <Stack.Screen
+        name="Your Products"
+        component={UserProductScreen}
+        options={({ routes, navigation }) => ({
+          title: "Your Products",
+          headerLeft: () => (
+            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+              <Item
+                title="Cart"
+                iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+                onPress={() => {
+                  navigation.toggleDrawer();
+                }}
+              ></Item>
+            </HeaderButtons>
+          ),
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
+
 // const BottomTabNavigator = () => {
 //   return (
 //     <Tab.Navigator>
@@ -162,6 +188,21 @@ const DrawerNavigator = () => {
             return (
               <Ionicons
                 name={Platform.OS === "android" ? "md-list" : "ios-list"}
+                size={23}
+                color={drawerConfig.tintColor}
+              ></Ionicons>
+            );
+          },
+        }}
+      />
+      <Drawer.Screen
+        name="Admin"
+        component={AdminStackNavigator}
+        options={{
+          drawerIcon: (drawerConfig) => {
+            return (
+              <Ionicons
+                name={Platform.OS === "android" ? "md-create" : "ios-create"}
                 size={23}
                 color={drawerConfig.tintColor}
               ></Ionicons>
