@@ -2,8 +2,10 @@ import React from "react";
 import { FlatList, View, Text, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 import OrderItem from "../../components/OrderItem";
+
 const OrdersScreen = () => {
   const orders = useSelector((state) => state.order.orders);
+
   return (
     <View style={styles.ordersWrapper}>
       {orders.length ? (
