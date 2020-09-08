@@ -11,6 +11,7 @@ import ProductDetailsScreen from "../screens/shop/ProductDetailsScreen";
 import UserProductScreen from "../screens/user/UserProductScreen";
 import CartScreen from "../screens/shop/CartScreen";
 import OrdersScreen from "../screens/shop/OrdersScreen";
+import EditProductScreen from "../screens/user/EditProductScreen";
 import CustomHeaderButton from "../components/HeaderButton";
 import Colors from "../styles/colors";
 
@@ -123,14 +124,14 @@ const AdminStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={defaultScreenOptions}>
       <Stack.Screen
-        name="Your Products"
+        name="YourProducts"
         component={UserProductScreen}
         options={({ routes, navigation }) => ({
           title: "Your Products",
           headerLeft: () => (
             <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
               <Item
-                title="Cart"
+                title="Menu"
                 iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
                 onPress={() => {
                   navigation.toggleDrawer();
@@ -138,7 +139,41 @@ const AdminStackNavigator = () => {
               ></Item>
             </HeaderButtons>
           ),
+          headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+              <Item
+                title="Create"
+                iconName={
+                  Platform.OS === "android" ? "md-create" : "ios-create"
+                }
+                onPress={() => {
+                  navigation.navigate("EditProduct");
+                }}
+              ></Item>
+            </HeaderButtons>
+          ),
         })}
+      />
+      <Stack.Screen
+        name="EditProduct"
+        component={EditProductScreen}
+        // options={({ route, navigation }) => ({
+        //  title: route.params.productId ? "Edit Product" : "Add Product",
+        // headerRight: () => (
+        //   <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+        //     <Item
+        //       title="Save"
+        //       iconName={
+        //         Platform.OS === "android" ? "md-checkmark" : "ios-checkmark"
+        //       }
+        //       onPress={() => {
+        //         console.log("routes: ", route, navigation);
+        //         navigation.toggleDrawer();
+        //       }}
+        //     ></Item>
+        //   </HeaderButtons>
+        // ),
+        //})}
       />
     </Stack.Navigator>
   );

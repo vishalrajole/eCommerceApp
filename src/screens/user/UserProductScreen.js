@@ -8,6 +8,7 @@ import Colors from "../../styles/colors";
 const UserProductScreen = (props) => {
   const userProducts = useSelector((state) => state.products.userProducts);
   const dispatch = useDispatch();
+
   return (
     <FlatList
       data={userProducts}
@@ -22,7 +23,11 @@ const UserProductScreen = (props) => {
           <Button
             color={Colors.primary}
             title="Edit"
-            onPress={() => {}}
+            onPress={() => {
+              props.navigation.navigate("EditProduct", {
+                productId: itemData.item.id,
+              });
+            }}
           ></Button>
           <Button
             color={Colors.primary}

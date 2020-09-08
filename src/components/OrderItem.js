@@ -11,7 +11,9 @@ const OrderItem = (props) => {
   return (
     <View style={styles.orderItem}>
       <View style={styles.summary}>
-        <Text style={styles.amount}>${order.orderAmount}</Text>
+        <Text style={styles.amount}>
+          ${(Math.abs(order.orderAmount).toFixed(2) * 100) / 100}
+        </Text>
         <Text style={styles.date}>{order.formattedDate}</Text>
       </View>
       <Button
