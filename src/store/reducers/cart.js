@@ -1,4 +1,5 @@
 import { ADD_TO_CART, REMOVE_FROM_CART, CLEAR_CART } from "../actions/cart";
+import { DELETE_PRODUCT } from "../actions/products";
 import CartItem from "../../__mocks__/cart-item";
 
 const initialState = {
@@ -63,6 +64,20 @@ export default (state = initialState, action) => {
     }
     case CLEAR_CART: {
       return initialState;
+    }
+    case DELETE_PRODUCT: {
+      if (!state.items[action.productId]) {
+        return state;
+      }
+      const updatedItems = { ...state.items };
+      const updatedItemTotal = state.items[action.productId].amount;
+      delete updatedItems[action.productId];
+
+      return {
+        ...state,
+        items: updatedItems,
+        cartTotalAmount: state.cartTotalAmount - updatedItemTotal,
+      };
     }
   }
   return state;
