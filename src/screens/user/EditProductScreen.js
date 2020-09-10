@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -7,18 +7,20 @@ import {
   ScrollView,
   Platform,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { updateProduct, createProduct } from "../../store/actions/products";
 import CustomHeaderButton from "../../components/HeaderButton";
 
 const EditProductScreen = ({ route, navigation }) => {
+  const dispatch = useDispatch();
+
   const productId = route?.params?.productId;
 
   const editedProduct = useSelector((state) =>
     state.products.userProducts.find((product) => product.id === productId)
   );
 
-  console.log("editedProduct: ", editedProduct);
   const [title, setTitle] = useState(editedProduct ? editedProduct.title : "");
   const [imageUrl, setImageUrl] = useState(
     editedProduct ? editedProduct.imageUrl : ""
@@ -27,6 +29,34 @@ const EditProductScreen = ({ route, navigation }) => {
   const [description, setDescription] = useState(
     editedProduct ? editedProduct.description : ""
   );
+
+  const submitHandler = () => {
+    console.log("submit");
+
+    if (editedProduct) {
+      dispatch(
+        updateProduct({
+          productId,
+          title,
+          description,
+          imageUrl,
+        })
+      );
+    } else {
+      dispatch(
+        createProduct({
+          title,
+          description,
+          imageUrl,
+          price,
+        })
+      );
+    }
+  };
+
+  useEffect(() => {
+    navigation.setParams({ submit: submitHandler });
+  }, [dispatch, productId, title, description, imageUrl, price]);
 
   navigation.setOptions({
     title: productId ? "Edit Product" : "Add Product",
@@ -37,9 +67,7 @@ const EditProductScreen = ({ route, navigation }) => {
           iconName={
             Platform.OS === "android" ? "md-checkmark" : "ios-checkmark"
           }
-          onPress={() => {
-            console.log("routes: ", route, navigation);
-          }}
+          onPress={submitHandler}
         ></Item>
       </HeaderButtons>
     ),
@@ -53,7 +81,7 @@ const EditProductScreen = ({ route, navigation }) => {
           <TextInput
             style={styles.input}
             value={title}
-            onChange={(text) => setTitle(text)}
+            onChangeText={(text) => setTitle(text)}
           ></TextInput>
         </View>
         <View style={styles.formControl}>
@@ -61,7 +89,7 @@ const EditProductScreen = ({ route, navigation }) => {
           <TextInput
             style={styles.input}
             value={imageUrl}
-            onChange={(text) => setImageUrl(imageUrl)}
+            onChangeText={(text) => setImageUrl(text)}
           ></TextInput>
         </View>
         {editedProduct ? null : (
@@ -70,7 +98,7 @@ const EditProductScreen = ({ route, navigation }) => {
             <TextInput
               style={styles.input}
               value={price}
-              onChange={(text) => setPrice(price)}
+              onChangeText={(text) => setPrice(text)}
             ></TextInput>
           </View>
         )}
@@ -79,7 +107,7 @@ const EditProductScreen = ({ route, navigation }) => {
           <TextInput
             style={styles.input}
             value={description}
-            onChange={(description) => setDescription(description)}
+            onChangeText={(text) => setDescription(text)}
           ></TextInput>
         </View>
       </View>
