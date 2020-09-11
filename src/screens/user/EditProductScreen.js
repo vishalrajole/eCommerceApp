@@ -6,6 +6,7 @@ import {
   TextInput,
   ScrollView,
   Platform,
+  Alert,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -31,8 +32,6 @@ const EditProductScreen = ({ route, navigation }) => {
   );
 
   const submitHandler = () => {
-    console.log("submit");
-
     if (editedProduct) {
       dispatch(
         updateProduct({
@@ -52,6 +51,7 @@ const EditProductScreen = ({ route, navigation }) => {
         })
       );
     }
+    navigation.goBack();
   };
 
   useEffect(() => {
