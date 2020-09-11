@@ -41,7 +41,7 @@ const ProductDetailsScreen = (props) => {
       <Text style={styles.price}>
         ${parseInt(selectedProduct.price).toFixed(2)}
       </Text>
-      <Text style={styles.description}>${selectedProduct.description}</Text>
+      <Text style={styles.description}>{selectedProduct.description}</Text>
     </ScrollView>
   );
 };
