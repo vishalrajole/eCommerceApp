@@ -47,17 +47,17 @@ export default (state = initialState, action) => {
         state.userProducts[productIndex].ownerId,
         action.product.title,
         action.product.imageUrl,
-        action.product.description
+        action.product.description,
+        state.userProducts[productIndex].price
       );
       const updatedUserProducts = [...state.userProducts];
       updatedUserProducts[productIndex] = updatedProduct;
+
       const availableProductIndex = state.availableProducts.findIndex(
         (product) => product.id === action.productId
       );
       const updatedAvailableProducts = [...state.availableProducts];
-      updatedAvailableProducts[
-        availableProductIndex
-      ] = updatedAvailableProducts;
+      updatedAvailableProducts[availableProductIndex] = updatedProduct;
 
       return {
         ...state,
