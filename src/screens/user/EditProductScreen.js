@@ -23,6 +23,7 @@ const EditProductScreen = ({ route, navigation }) => {
   );
 
   const [title, setTitle] = useState(editedProduct ? editedProduct.title : "");
+  const [isTitleValid, setTitleValid] = useState(false);
   const [imageUrl, setImageUrl] = useState(
     editedProduct ? editedProduct.imageUrl : ""
   );
@@ -32,6 +33,12 @@ const EditProductScreen = ({ route, navigation }) => {
   );
 
   const submitHandler = () => {
+    if (!isTitleValid) {
+      Alert.alert("Invalid Form", "Please check validation erros", [
+        { text: "Close" },
+      ]);
+      return;
+    }
     if (editedProduct) {
       dispatch(
         updateProduct({
@@ -52,6 +59,15 @@ const EditProductScreen = ({ route, navigation }) => {
       );
     }
     navigation.goBack();
+  };
+
+  const titleChangeHandler = (text) => {
+    if (text.trim().length === 0) {
+      setTitleValid(false);
+    } else {
+      setTitleValid(true);
+    }
+    setTitle(text);
   };
 
   useEffect(() => {
@@ -81,8 +97,10 @@ const EditProductScreen = ({ route, navigation }) => {
           <TextInput
             style={styles.input}
             value={title}
-            onChangeText={(text) => setTitle(text)}
+            onChangeText={titleChangeHandler}
+            autoCapitalize={"sentences"}
           ></TextInput>
+          {!isTitleValid && <Text>Enter valid title</Text>}
         </View>
         <View style={styles.formControl}>
           <Text style={styles.label}>Image url</Text>
@@ -99,6 +117,7 @@ const EditProductScreen = ({ route, navigation }) => {
               style={styles.input}
               value={price}
               onChangeText={(text) => setPrice(text)}
+              keyboardType={"decimal-pad"}
             ></TextInput>
           </View>
         )}
