@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   StyleSheet,
   View,
@@ -32,7 +32,7 @@ const EditProductScreen = ({ route, navigation }) => {
     editedProduct ? editedProduct.description : ""
   );
 
-  const submitHandler = () => {
+  const submitHandler = useCallback(() => {
     if (!isTitleValid) {
       Alert.alert("Invalid Form", "Please check validation erros", [
         { text: "Close" },
@@ -59,7 +59,7 @@ const EditProductScreen = ({ route, navigation }) => {
       );
     }
     navigation.goBack();
-  };
+  }, [dispatch, productId, title, description, imageUrl, price, isTitleValid]);
 
   const titleChangeHandler = (text) => {
     if (text.trim().length === 0) {
@@ -72,7 +72,7 @@ const EditProductScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     navigation.setParams({ submit: submitHandler });
-  }, [dispatch, productId, title, description, imageUrl, price]);
+  }, [submitHandler]);
 
   navigation.setOptions({
     title: productId ? "Edit Product" : "Add Product",
