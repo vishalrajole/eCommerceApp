@@ -24,9 +24,9 @@ export default (state = initialState, action) => {
         }),
       };
     case CREATE_PRODUCT:
-      const { title, description, imageUrl, price } = action.product;
+      const { title, description, imageUrl, price, id } = action.product;
       const product = new Product(
-        new Date().toString(),
+        id,
         "u1",
         title,
         imageUrl,
