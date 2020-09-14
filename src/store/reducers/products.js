@@ -3,16 +3,24 @@ import {
   DELETE_PRODUCT,
   CREATE_PRODUCT,
   UPDATE_PRODUCT,
+  FETCH_PRODUCT,
 } from "../actions/products";
 import Product from "../../__mocks__/product";
 
 const initialState = {
-  availableProducts: PRODUCTS,
-  userProducts: PRODUCTS.filter((product) => product.ownerId === "u1"),
+  availableProducts: [],
+  userProducts: [],
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case FETCH_PRODUCT:
+      return {
+        availableProducts: action.products,
+        userProducts: action.products.filter(
+          (product) => product.ownerId === "u1"
+        ),
+      };
     case DELETE_PRODUCT:
       return {
         ...state,

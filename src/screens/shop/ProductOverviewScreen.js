@@ -1,13 +1,18 @@
-import React from "react";
-import { FlatList, Text, Button } from "react-native";
+import React, { useEffect } from "react";
+import { FlatList, Button } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import ProductItem from "../../components/ProductItem";
 import { addToCart } from "../../store/actions/cart";
+import { fetchProducts } from "../../store/actions/products";
 import Colors from "../../styles/colors";
 
 const ProductOverviewScreen = (props) => {
   const products = useSelector((state) => state.products.availableProducts);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
   const onSelect = (itemId, itemTitle) => {
     props.navigation.navigate("ProductDetails", {
