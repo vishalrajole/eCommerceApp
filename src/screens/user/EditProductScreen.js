@@ -1,5 +1,12 @@
 import React, { useEffect, useCallback, useReducer } from "react";
-import { StyleSheet, View, ScrollView, Platform, Alert } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Platform,
+  Alert,
+  KeyboardAvoidingView,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { updateProduct, createProduct } from "../../store/actions/products";
@@ -116,53 +123,59 @@ const EditProductScreen = ({ route, navigation }) => {
   });
 
   return (
-    <ScrollView>
-      <View style={styles.form}>
-        <Input
-          id="title"
-          label="Title"
-          errorText={"Enter title"}
-          onInputChange={onTextChangeHandler}
-          value={editedProduct ? editedProduct.title : ""}
-          isInitiallyValid={!!editedProduct}
-          required
-        />
-
-        <Input
-          id="imageUrl"
-          label="Image Url"
-          errorText={"Enter image url"}
-          onInputChange={onTextChangeHandler}
-          value={editedProduct ? editedProduct.imageUrl : ""}
-          isInitiallyValid={!!editedProduct}
-          required
-        />
-
-        {editedProduct ? null : (
+    <KeyboardAvoidingView
+      behavior="padding"
+      keyboardVerticalOffset={100}
+      style={{ flex: 1 }}
+    >
+      <ScrollView>
+        <View style={styles.form}>
           <Input
-            id="price"
-            label="Price"
-            errorText={"Enter price"}
-            keyboardType="decimal-pad"
+            id="title"
+            label="Title"
+            errorText={"Enter title"}
             onInputChange={onTextChangeHandler}
-            value={editedProduct ? editedProduct.price : ""}
+            value={editedProduct ? editedProduct.title : ""}
+            isInitiallyValid={!!editedProduct}
             required
           />
-        )}
 
-        <Input
-          id="description"
-          label="Description"
-          errorText={"Enter description"}
-          multiline
-          onInputChange={onTextChangeHandler}
-          value={editedProduct ? editedProduct.description : ""}
-          isInitiallyValid={!!editedProduct}
-          required
-          minLength={5}
-        />
-      </View>
-    </ScrollView>
+          <Input
+            id="imageUrl"
+            label="Image Url"
+            errorText={"Enter image url"}
+            onInputChange={onTextChangeHandler}
+            value={editedProduct ? editedProduct.imageUrl : ""}
+            isInitiallyValid={!!editedProduct}
+            required
+          />
+
+          {editedProduct ? null : (
+            <Input
+              id="price"
+              label="Price"
+              errorText={"Enter price"}
+              keyboardType="decimal-pad"
+              onInputChange={onTextChangeHandler}
+              value={editedProduct ? editedProduct.price : ""}
+              required
+            />
+          )}
+
+          <Input
+            id="description"
+            label="Description"
+            errorText={"Enter description"}
+            multiline
+            onInputChange={onTextChangeHandler}
+            value={editedProduct ? editedProduct.description : ""}
+            isInitiallyValid={!!editedProduct}
+            required
+            minLength={5}
+          />
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
