@@ -92,7 +92,6 @@ const EditProductScreen = ({ route, navigation }) => {
 
   const onTextChangeHandler = useCallback(
     (inputType, value, isValid) => {
-      console.log("input: ", inputType, value, isValid);
       dispatchFormState({
         type: FORM_UPDATE,
         value,
