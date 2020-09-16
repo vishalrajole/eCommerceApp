@@ -1,5 +1,12 @@
-import React, { useEffect } from "react";
-import { FlatList, Button } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  FlatList,
+  Button,
+  ActivityIndicator,
+  StyleSheet,
+  View,
+  Text,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import ProductItem from "../../components/ProductItem";
 import { addToCart } from "../../store/actions/cart";
@@ -7,11 +14,24 @@ import { fetchProducts } from "../../store/actions/products";
 import Colors from "../../styles/colors";
 
 const ProductOverviewScreen = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
   const products = useSelector((state) => state.products.availableProducts);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchProducts());
+    const getProducts = async () => {
+      setIsLoading(true);
+      setError(false);
+      try {
+        await dispatch(fetchProducts());
+      } catch (err) {
+        setError(true);
+      }
+
+      setIsLoading(false);
+    };
+    getProducts();
   }, [dispatch]);
 
   const onSelect = (itemId, itemTitle) => {
@@ -20,6 +40,28 @@ const ProductOverviewScreen = (props) => {
       productTitle: itemTitle,
     });
   };
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingWrapper}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
+  if (!isLoading && products.length === 0) {
+    return (
+      <View style={styles.loadingWrapper}>
+        <Text>No Products found</Text>
+      </View>
+    );
+  }
+  if (error) {
+    return (
+      <View style={styles.loadingWrapper}>
+        <Text>Something went wrong while fetching products</Text>
+      </View>
+    );
+  }
   return (
     <FlatList
       data={products}
@@ -51,6 +93,13 @@ const ProductOverviewScreen = (props) => {
   );
 };
 
+const styles = StyleSheet.create({
+  loadingWrapper: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 ProductOverviewScreen.navigationOptions = {
   headerTitle: "sdsdf",
 };

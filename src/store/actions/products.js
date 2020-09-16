@@ -6,25 +6,32 @@ export const FETCH_PRODUCT = "FETCH_PRODUCTS";
 
 export const fetchProducts = () => {
   return async (dispatch) => {
-    const response = await fetch(
-      "https://ecommerceapp-27710.firebaseio.com/products.json"
-    );
-
-    const resData = await response.json();
-    const products = [];
-    for (const key in resData) {
-      products.push(
-        new Product(
-          key,
-          "u1",
-          resData[key].title,
-          resData[key].imageUrl,
-          resData[key].description,
-          resData[key].price
-        )
+    try {
+      const response = await fetch(
+        "https://ecommerceapp-27710.firebaseio.com/products.json"
       );
+
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+      const resData = await response.json();
+      const products = [];
+      for (const key in resData) {
+        products.push(
+          new Product(
+            key,
+            "u1",
+            resData[key].title,
+            resData[key].imageUrl,
+            resData[key].description,
+            resData[key].price
+          )
+        );
+      }
+      dispatch({ type: FETCH_PRODUCT, products: products });
+    } catch (err) {
+      throw err;
     }
-    dispatch({ type: FETCH_PRODUCT, products: products });
   };
 };
 export const deleteProduct = (productId) => {
