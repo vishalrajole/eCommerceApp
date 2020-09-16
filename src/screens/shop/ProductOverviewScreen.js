@@ -19,20 +19,25 @@ const ProductOverviewScreen = (props) => {
   const products = useSelector((state) => state.products.availableProducts);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const getProducts = async () => {
-      setIsLoading(true);
-      setError(false);
-      try {
-        await dispatch(fetchProducts());
-      } catch (err) {
-        setError(true);
-      }
+  const getProducts = async () => {
+    setIsLoading(true);
+    setError(false);
+    try {
+      await dispatch(fetchProducts());
+    } catch (err) {
+      setError(true);
+    }
 
-      setIsLoading(false);
-    };
+    setIsLoading(false);
+  };
+  useEffect(() => {
     getProducts();
   }, [dispatch]);
+
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener("focus", getProducts);
+    return unsubscribe;
+  }, [getProducts]);
 
   const onSelect = (itemId, itemTitle) => {
     props.navigation.navigate("ProductDetails", {
