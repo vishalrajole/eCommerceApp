@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useReducer } from "react";
+import React, { useEffect, useCallback, useReducer, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -6,12 +6,14 @@ import {
   Platform,
   Alert,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { updateProduct, createProduct } from "../../store/actions/products";
 import CustomHeaderButton from "../../components/HeaderButton";
 import Input from "../../components/Input";
+import Colors from "../../styles/colors";
 
 const FORM_UPDATE = "FORM_UPDATE";
 
@@ -41,6 +43,9 @@ const formReducer = (state, action) => {
 const EditProductScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+
   const productId = route?.params?.productId;
 
   const editedProduct = useSelector((state) =>
@@ -63,31 +68,38 @@ const EditProductScreen = ({ route, navigation }) => {
     isFormValid: editedProduct ? true : false,
   });
 
-  const submitHandler = useCallback(() => {
+  const submitHandler = useCallback(async () => {
     if (!formState.isFormValid) {
       Alert.alert("Form Error", "Please fill all details", [{ text: "Close" }]);
       return;
     }
-    if (editedProduct) {
-      dispatch(
-        updateProduct({
-          productId,
-          title: formState.inputValues.title,
-          description: formState.inputValues.description,
-          imageUrl: formState.inputValues.imageUrl,
-        })
-      );
-    } else {
-      dispatch(
-        createProduct({
-          title: formState.inputValues.title,
-          description: formState.inputValues.description,
-          imageUrl: formState.inputValues.imageUrl,
-          price: formState.inputValues.price,
-        })
-      );
+    setIsLoading(true);
+    setError(null);
+    try {
+      if (editedProduct) {
+        await dispatch(
+          updateProduct({
+            productId,
+            title: formState.inputValues.title,
+            description: formState.inputValues.description,
+            imageUrl: formState.inputValues.imageUrl,
+          })
+        );
+      } else {
+        await dispatch(
+          createProduct({
+            title: formState.inputValues.title,
+            description: formState.inputValues.description,
+            imageUrl: formState.inputValues.imageUrl,
+            price: formState.inputValues.price,
+          })
+        );
+      }
+      navigation.goBack();
+    } catch (err) {
+      setError(err.message);
     }
-    navigation.goBack();
+    setIsLoading(false);
   }, [dispatch, productId, formState]);
 
   const onTextChangeHandler = useCallback(
@@ -106,6 +118,12 @@ const EditProductScreen = ({ route, navigation }) => {
     navigation.setParams({ submit: submitHandler });
   }, [submitHandler]);
 
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An error", error, [{ text: "Okay" }]);
+    }
+  }, [error]);
+
   navigation.setOptions({
     title: productId ? "Edit Product" : "Add Product",
     headerRight: () => (
@@ -121,6 +139,16 @@ const EditProductScreen = ({ route, navigation }) => {
     ),
   });
 
+  if (isLoading) {
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator
+          size={"large"}
+          color={Colors.primary}
+        ></ActivityIndicator>
+      </View>
+    );
+  }
   return (
     <KeyboardAvoidingView
       behavior="padding"
@@ -181,6 +209,11 @@ const EditProductScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   form: {
     margin: 20,
+  },
+  loading: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 export default EditProductScreen;
