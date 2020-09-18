@@ -24,7 +24,7 @@ export const fetchProducts = () => {
             resData[key].title,
             resData[key].imageUrl,
             resData[key].description,
-            resData[key].price
+            parseFloat(resData[key].price)
           )
         );
       }
@@ -36,7 +36,7 @@ export const fetchProducts = () => {
 };
 export const deleteProduct = (productId) => {
   return async (dispatch) => {
-    const reponse = await fetch(
+    const response = await fetch(
       `https://ecommerceapp-27710.firebaseio.com/products/${productId}.json`,
       {
         method: "DELETE",
