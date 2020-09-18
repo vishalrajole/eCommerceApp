@@ -17,22 +17,24 @@ export default (state = initialState, action) => {
       if (state.items[product.id]) {
         itemToAdd = new CartItem({
           quantity: state.items[product.id].quantity + 1,
-          unitPrice: product.price,
+          unitPrice: parseFloat(product.price),
           title: product.title,
-          amount: state.items[product.id].amount + product.price,
+          amount: state.items[product.id].amount + parseFloat(product.price),
         });
       } else {
         itemToAdd = new CartItem({
           quantity: 1,
-          unitPrice: product.price,
+          unitPrice: parseFloat(product.price),
           title: product.title,
-          amount: product.price,
+          amount: parseFloat(product.price),
         });
       }
       return {
         ...state,
         items: { ...state.items, [product.id]: itemToAdd },
-        cartTotalAmount: state.cartTotalAmount + product.price,
+        cartTotalAmount: (
+          parseFloat(state.cartTotalAmount) + parseFloat(product.price)
+        ).toFixed(2),
       };
     }
     case REMOVE_FROM_CART: {
@@ -45,7 +47,8 @@ export default (state = initialState, action) => {
           quantity: selectedProduct.quantity - 1,
           unitPrice: selectedProduct.unitPrice,
           title: selectedProduct.title,
-          amount: selectedProduct.amount - selectedProduct.unitPrice,
+          amount:
+            selectedProduct.amount - parseFloat(selectedProduct.unitPrice),
         });
         updatedCartItems = {
           ...state.items,
@@ -59,7 +62,10 @@ export default (state = initialState, action) => {
       return {
         ...state,
         items: updatedCartItems,
-        cartTotalAmount: state.cartTotalAmount - selectedProduct.unitPrice,
+        cartTotalAmount: (
+          parseFloat(state.cartTotalAmount) -
+          parseFloat(selectedProduct.unitPrice)
+        ).toFixed(2),
       };
     }
     case CLEAR_CART: {
@@ -70,13 +76,15 @@ export default (state = initialState, action) => {
         return state;
       }
       const updatedItems = { ...state.items };
-      const updatedItemTotal = state.items[action.productId].amount;
+      const updatedItemTotal = parseFloat(state.items[action.productId].amount);
       delete updatedItems[action.productId];
 
       return {
         ...state,
         items: updatedItems,
-        cartTotalAmount: state.cartTotalAmount - updatedItemTotal,
+        cartTotalAmount: (
+          parseFloat(state.cartTotalAmount) - parseFloat(updatedItemTotal)
+        ).toFixed(2),
       };
     }
   }

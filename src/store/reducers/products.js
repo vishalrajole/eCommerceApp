@@ -39,7 +39,7 @@ export default (state = initialState, action) => {
         title,
         imageUrl,
         description,
-        price
+        parseFloat(price)
       );
       return {
         ...state,

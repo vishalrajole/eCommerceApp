@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, FlatList, Button, Alert } from "react-native";
+import { StyleSheet, FlatList, Button, Alert, View, Text } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import ProductItem from "../../components/ProductItem";
 import { deleteProduct } from "../../store/actions/products";
@@ -21,6 +21,14 @@ const UserProductScreen = (props) => {
       },
     ]);
   };
+
+  if (userProducts.length === 0) {
+    return (
+      <View style={styles.loadingWrapper}>
+        <Text>No Products found</Text>
+      </View>
+    );
+  }
 
   return (
     <FlatList
@@ -51,9 +59,15 @@ const UserProductScreen = (props) => {
           ></Button>
         </ProductItem>
       )}
-    ></FlatList>
+    />
   );
 };
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  loadingWrapper: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default UserProductScreen;

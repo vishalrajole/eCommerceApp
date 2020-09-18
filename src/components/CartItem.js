@@ -17,7 +17,9 @@ const CartItem = (props) => {
         <Text style={styles.title}>{product.title} </Text>
       </View>
       <View style={styles.itemData}>
-        <Text style={styles.amount}>${product.amount.toFixed(2)}</Text>
+        <Text style={styles.amount}>
+          ${parseFloat(product.amount).toFixed(2)}
+        </Text>
         {showDeleteButton && (
           <TouchableOpacity
             onPress={props.onDelete}

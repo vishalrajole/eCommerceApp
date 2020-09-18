@@ -13,6 +13,7 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { updateProduct, createProduct } from "../../store/actions/products";
 import CustomHeaderButton from "../../components/HeaderButton";
 import Input from "../../components/Input";
+import NumericInput from "../../components/NumericInput";
 import Colors from "../../styles/colors";
 
 const FORM_UPDATE = "FORM_UPDATE";
@@ -178,12 +179,12 @@ const EditProductScreen = ({ route, navigation }) => {
           />
 
           {editedProduct ? null : (
-            <Input
+            <NumericInput
               id="price"
               label="Price"
-              errorText={"Enter price"}
+              errorText={"Enter numeric price"}
               keyboardType="decimal-pad"
-              onInputChange={onTextChangeHandler}
+              onNumericInputChange={onTextChangeHandler}
               value={editedProduct ? editedProduct.price : ""}
               required
             />
