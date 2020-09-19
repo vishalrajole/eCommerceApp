@@ -1,5 +1,12 @@
-import React from "react";
-import { View, Button, StyleSheet, Text, FlatList } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Button,
+  StyleSheet,
+  Text,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import CartItem from "../../components/CartItem";
 import Colors from "../../styles/colors";
@@ -7,6 +14,8 @@ import { removeFromCart, clearCart } from "../../store/actions/cart";
 import { orderNow } from "../../store/actions/order";
 
 const CartScreen = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const cartTotalAmount = useSelector((state) => state.cart.cartTotalAmount);
   const dispatch = useDispatch();
 
@@ -24,6 +33,21 @@ const CartScreen = (props) => {
     return products.sort((a, b) => (a.productId > b.productId ? 1 : -1));
   });
 
+  const orderProducts = async () => {
+    setIsLoading(true);
+    await dispatch(
+      orderNow({
+        orderItems: cartProducts,
+        orderAmount: cartTotalAmount,
+      })
+    );
+    setIsLoading(false);
+    dispatch(clearCart());
+    props.navigation.navigate("Orders");
+  };
+
+  if (isLoading) {
+  }
   return (
     <View style={styles.screen}>
       <View style={styles.summary}>
@@ -33,21 +57,16 @@ const CartScreen = (props) => {
             ${parseFloat(cartTotalAmount).toFixed(2)}
           </Text>
         </Text>
-        <Button
-          title="Order Now"
-          color={Colors.accent}
-          disabled={cartProducts.length === 0}
-          onPress={() => {
-            dispatch(
-              orderNow({
-                orderItems: cartProducts,
-                orderAmount: cartTotalAmount,
-              })
-            );
-            dispatch(clearCart());
-            props.navigation.navigate("Orders");
-          }}
-        />
+        {isLoading ? (
+          <ActivityIndicator size="small" color={Colors.primary} />
+        ) : (
+          <Button
+            title="Order Now"
+            color={Colors.accent}
+            disabled={cartProducts.length === 0}
+            onPress={orderProducts}
+          />
+        )}
       </View>
 
       <FlatList
