@@ -15,9 +15,19 @@ import Colors from "../../styles/colors";
 
 const ProductOverviewScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState(false);
   const products = useSelector((state) => state.products.availableProducts);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    getProducts();
+  }, [dispatch, setIsRefreshing, setIsLoading, setError]);
+
+  useEffect(() => {
+    const unsubscribe = props.navigation.addListener("focus", getProducts);
+    return unsubscribe;
+  }, [getProducts]);
 
   const getProducts = async () => {
     setIsLoading(true);
@@ -30,14 +40,15 @@ const ProductOverviewScreen = (props) => {
 
     setIsLoading(false);
   };
-  useEffect(() => {
-    getProducts();
-  }, [dispatch]);
-
-  useEffect(() => {
-    const unsubscribe = props.navigation.addListener("focus", getProducts);
-    return unsubscribe;
-  }, [getProducts]);
+  const refreshProducts = async () => {
+    setIsRefreshing(true);
+    try {
+      await dispatch(fetchProducts());
+    } catch (err) {
+      setError(true);
+    }
+    setIsRefreshing(false);
+  };
 
   const onSelect = (itemId, itemTitle) => {
     props.navigation.navigate("ProductDetails", {
@@ -71,6 +82,8 @@ const ProductOverviewScreen = (props) => {
     <FlatList
       data={products}
       keyExtractor={(item) => item.id}
+      onRefresh={refreshProducts}
+      refreshing={isRefreshing}
       renderItem={(itemData) => (
         <ProductItem
           title={itemData.item.title}
