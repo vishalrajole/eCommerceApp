@@ -12,10 +12,12 @@ import UserProductScreen from "../screens/user/UserProductScreen";
 import CartScreen from "../screens/shop/CartScreen";
 import OrdersScreen from "../screens/shop/OrdersScreen";
 import EditProductScreen from "../screens/user/EditProductScreen";
+import AuthScreen from "../screens/user/AuthScreen";
 import CustomHeaderButton from "../components/HeaderButton";
 import Colors from "../styles/colors";
 
 const Stack = createStackNavigator();
+const AuthStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -192,6 +194,7 @@ const DrawerNavigator = () => {
   return (
     <Drawer.Navigator
       screenOptions={defaultScreenOptions}
+      initialRouteName="Products"
       drawerStyle={{
         backgroundColor: "white",
         width: 240,
@@ -249,4 +252,23 @@ const DrawerNavigator = () => {
   );
 };
 
-export default DrawerNavigator;
+const AuthNavigator = ({ userToken = false }) => {
+  console.log("token: ", userToken);
+  return (
+    <AuthStack.Navigator screenOptions={defaultScreenOptions}>
+      {userToken ? (
+        <AuthStack.Screen name="App" component={DrawerNavigator} />
+      ) : (
+        <AuthStack.Screen
+          name="Auth"
+          component={AuthScreen}
+          options={{
+            title: "Login",
+          }}
+        />
+      )}
+    </AuthStack.Navigator>
+  );
+};
+
+export default AuthNavigator;

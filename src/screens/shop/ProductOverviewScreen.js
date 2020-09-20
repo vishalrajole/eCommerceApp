@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-ProductOverviewScreen.navigationOptions = {
-  headerTitle: "sdsdf",
-};
+// ProductOverviewScreen.navigationOptions = {
+//   headerTitle: "sdsdf",
+// };
 export default ProductOverviewScreen;
