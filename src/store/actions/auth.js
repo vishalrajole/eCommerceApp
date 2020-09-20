@@ -1,5 +1,6 @@
 export const SIGN_UP = "SIGN_UP";
 export const LOGIN = "LOGIN";
+
 export const signup = ({ email, password }) => {
   return async (dispatch) => {
     const response = await fetch(
@@ -18,7 +19,13 @@ export const signup = ({ email, password }) => {
     );
 
     if (!response.ok) {
-      throw new Error("Failed to sign up.");
+      const errorResData = await response.json();
+      const errorType = errorResData.error.message;
+      let message = "Something went wrong!";
+      if (errorType === "EMAIL_EXISTS") {
+        message = "Email id already exists";
+      }
+      throw new Error(message);
     }
 
     const resData = await response.json();
@@ -46,7 +53,15 @@ export const login = ({ email, password }) => {
     );
 
     if (!response.ok) {
-      throw new Error("Failed to login.");
+      const errorResData = await response.json();
+      const errorType = errorResData.error.message;
+      let message = "Something went wrong!";
+      if (errorType === "EMAIL_NOT_FOUND") {
+        message = "Email id does not exists";
+      } else if (errorType === "INVALID_PASSWORD") {
+        message = "Invalid password";
+      }
+      throw new Error(message);
     }
 
     const resData = await response.json();

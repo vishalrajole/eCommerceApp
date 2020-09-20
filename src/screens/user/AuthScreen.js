@@ -1,5 +1,12 @@
-import React, { useReducer, useCallback, useState } from "react";
-import { KeyboardAvoidingView, StyleSheet, View, Button } from "react-native";
+import React, { useReducer, useCallback, useState, useEffect } from "react";
+import {
+  KeyboardAvoidingView,
+  StyleSheet,
+  View,
+  Button,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch } from "react-redux";
@@ -37,6 +44,8 @@ const AuthScreen = () => {
   const dispatch = useDispatch();
 
   const [isSignup, setIsSignup] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -50,22 +59,36 @@ const AuthScreen = () => {
     isFormValid: false,
   });
 
-  const authHandler = () => {
-    if (isSignup) {
-      dispatch(
-        signup({
-          email: formState.inputValues.email,
-          password: formState.inputValues.password,
-        })
-      );
-    } else {
-      dispatch(
-        login({
-          email: formState.inputValues.email,
-          password: formState.inputValues.password,
-        })
-      );
+  useEffect(() => {
+    if (error) {
+      Alert.alert("Error", error, [{ text: "Okay" }]);
     }
+  }, [error]);
+
+  const authHandler = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      if (isSignup) {
+        await dispatch(
+          signup({
+            email: formState.inputValues.email,
+            password: formState.inputValues.password,
+          })
+        );
+      } else {
+        await dispatch(
+          login({
+            email: formState.inputValues.email,
+            password: formState.inputValues.password,
+          })
+        );
+      }
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+    }
+    setIsLoading(false);
   };
 
   const onTextChangeHandler = useCallback(
@@ -111,11 +134,18 @@ const AuthScreen = () => {
               value={""}
             />
             <View style={styles.button}>
-              <Button
-                title={`${isSignup ? "Sign up" : "Login"}`}
-                color={Colors.primary}
-                onPress={authHandler}
-              />
+              {isLoading ? (
+                <ActivityIndicator
+                  size={"small"}
+                  color={Colors.primary}
+                ></ActivityIndicator>
+              ) : (
+                <Button
+                  title={`${isSignup ? "Sign up" : "Login"}`}
+                  color={Colors.primary}
+                  onPress={authHandler}
+                />
+              )}
             </View>
             <View style={styles.button}>
               <Button
