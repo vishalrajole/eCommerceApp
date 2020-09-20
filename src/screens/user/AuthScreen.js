@@ -40,7 +40,7 @@ const formReducer = (state, action) => {
   return state;
 };
 
-const AuthScreen = () => {
+const AuthScreen = (props) => {
   const dispatch = useDispatch();
 
   const [isSignup, setIsSignup] = useState(false);
@@ -84,6 +84,15 @@ const AuthScreen = () => {
           })
         );
       }
+
+      // TODO NOT WORKING nested navigation
+      props.navigation.navigate("App", {
+        screen: "ProductsNavigator",
+        params: {
+          screen: "ProductsOverview",
+        },
+      });
+
       setError(null);
     } catch (err) {
       setError(err.message);

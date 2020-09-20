@@ -16,7 +16,10 @@ import AuthScreen from "../screens/user/AuthScreen";
 import CustomHeaderButton from "../components/HeaderButton";
 import Colors from "../styles/colors";
 
-const Stack = createStackNavigator();
+const AppStack = createStackNavigator();
+const ProductsStack = createStackNavigator();
+const OrdersStack = createStackNavigator();
+const AdminStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -39,8 +42,11 @@ const defaultScreenOptions = {
 
 const ProductsNavigator = () => {
   return (
-    <Stack.Navigator screenOptions={defaultScreenOptions}>
-      <Stack.Screen
+    <ProductsStack.Navigator
+      screenOptions={defaultScreenOptions}
+      initialRouteName="ProductsOverview"
+    >
+      <ProductsStack.Screen
         name="ProductsOverview"
         component={ProductsOverviewScreen}
         options={({ routes, navigation }) => ({
@@ -62,14 +68,14 @@ const ProductsNavigator = () => {
                 title="Cart"
                 iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
                 onPress={() => {
-                  navigation.navigate("CartScreen");
+                  navigation.navigate("Cart");
                 }}
               ></Item>
             </HeaderButtons>
           ),
         })}
       />
-      <Stack.Screen
+      <ProductsStack.Screen
         name="ProductDetails"
         component={ProductDetailsScreen}
         options={({ routes, navigation }) => ({
@@ -79,28 +85,28 @@ const ProductsNavigator = () => {
                 title="Cart"
                 iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
                 onPress={() => {
-                  navigation.navigate("CartScreen");
+                  navigation.navigate("Cart");
                 }}
               ></Item>
             </HeaderButtons>
           ),
         })}
       />
-
-      <Stack.Screen
-        name="CartScreen"
+      <ProductsStack.Screen
+        name="Cart"
         component={CartScreen}
         options={{
           title: "Cart",
         }}
       />
-    </Stack.Navigator>
+    </ProductsStack.Navigator>
   );
 };
+
 const OrdersStackNavigator = () => {
   return (
-    <Stack.Navigator screenOptions={defaultScreenOptions}>
-      <Stack.Screen
+    <OrdersStack.Navigator screenOptions={defaultScreenOptions}>
+      <OrdersStack.Screen
         name="Orders"
         component={OrdersScreen}
         options={({ routes, navigation }) => ({
@@ -118,18 +124,18 @@ const OrdersStackNavigator = () => {
           ),
         })}
       />
-    </Stack.Navigator>
+    </OrdersStack.Navigator>
   );
 };
 
 const AdminStackNavigator = () => {
   return (
-    <Stack.Navigator screenOptions={defaultScreenOptions}>
-      <Stack.Screen
-        name="YourProducts"
+    <AdminStack.Navigator screenOptions={defaultScreenOptions}>
+      <AdminStack.Screen
+        name="UserProducts"
         component={UserProductScreen}
         options={({ routes, navigation }) => ({
-          title: "Your Products",
+          title: "User Products",
           headerLeft: () => (
             <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
               <Item
@@ -156,39 +162,10 @@ const AdminStackNavigator = () => {
           ),
         })}
       />
-      <Stack.Screen
-        name="EditProduct"
-        component={EditProductScreen}
-        // options={({ route, navigation }) => ({
-        //  title: route.params.productId ? "Edit Product" : "Add Product",
-        // headerRight: () => (
-        //   <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-        //     <Item
-        //       title="Save"
-        //       iconName={
-        //         Platform.OS === "android" ? "md-checkmark" : "ios-checkmark"
-        //       }
-        //       onPress={() => {
-        //         console.log("routes: ", route, navigation);
-        //         navigation.toggleDrawer();
-        //       }}
-        //     ></Item>
-        //   </HeaderButtons>
-        // ),
-        //})}
-      />
-    </Stack.Navigator>
+      <AdminStack.Screen name="EditProduct" component={EditProductScreen} />
+    </AdminStack.Navigator>
   );
 };
-
-// const BottomTabNavigator = () => {
-//   return (
-//     <Tab.Navigator>
-//       <Tab.Screen name="Products" component={ProductsNavigator} />
-//       <Tab.Screen name="Orders" component={OrdersStackNavigator} />
-//     </Tab.Navigator>
-//   );
-// };
 
 const DrawerNavigator = () => {
   return (
@@ -252,23 +229,34 @@ const DrawerNavigator = () => {
   );
 };
 
-const AuthNavigator = ({ userToken = false }) => {
-  console.log("token: ", userToken);
+const AuthNavigator = () => {
   return (
     <AuthStack.Navigator screenOptions={defaultScreenOptions}>
-      {userToken ? (
-        <AuthStack.Screen name="App" component={DrawerNavigator} />
-      ) : (
-        <AuthStack.Screen
-          name="Auth"
-          component={AuthScreen}
-          options={{
-            title: "Login",
-          }}
-        />
-      )}
+      <AuthStack.Screen
+        name="Auth"
+        component={AuthScreen}
+        options={{
+          title: "Login",
+        }}
+      />
     </AuthStack.Navigator>
   );
 };
 
-export default AuthNavigator;
+const AppNavigator = ({ userToken = true }) => {
+  return (
+    <AppStack.Navigator
+      screenOptions={defaultScreenOptions}
+      headerMode="none"
+      initialRouteName="SignUp"
+    >
+      {userToken ? (
+        <AppStack.Screen name="App" component={DrawerNavigator} />
+      ) : (
+        <AppStack.Screen name="SignUp" component={AuthNavigator} />
+      )}
+    </AppStack.Navigator>
+  );
+};
+
+export default AppNavigator;

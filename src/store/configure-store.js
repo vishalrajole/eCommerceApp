@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
 });
 
 export default function configureStore(preloadedState) {
-  const middlewares = [logger, thunkMiddleware];
+  const middlewares = [thunkMiddleware]; // removed logger from here
   const middlewareEnhancer = applyMiddleware(...middlewares);
 
   const enhancers = [middlewareEnhancer];
