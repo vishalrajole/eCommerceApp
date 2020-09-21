@@ -13,6 +13,7 @@ import CartScreen from "../screens/shop/CartScreen";
 import OrdersScreen from "../screens/shop/OrdersScreen";
 import EditProductScreen from "../screens/user/EditProductScreen";
 import AuthScreen from "../screens/user/AuthScreen";
+import StartupScreen from "../screens/StartupScreen";
 import CustomHeaderButton from "../components/HeaderButton";
 import Colors from "../styles/colors";
 
@@ -253,7 +254,8 @@ const AppNavigator = ({ userToken = true }) => {
       {userToken ? (
         <AppStack.Screen name="App" component={DrawerNavigator} />
       ) : (
-        <AppStack.Screen name="SignUp" component={AuthNavigator} />
+        // <AppStack.Screen name="SignUp" component={AuthNavigator} />
+        <AppStack.Screen name="StartupScreen" component={StartupScreen} />
       )}
     </AppStack.Navigator>
   );
