@@ -1,4 +1,3 @@
-import PRODUCTS from "../../__mocks__/data";
 import {
   DELETE_PRODUCT,
   CREATE_PRODUCT,
@@ -17,9 +16,7 @@ export default (state = initialState, action) => {
     case FETCH_PRODUCT:
       return {
         availableProducts: action.products,
-        userProducts: action.products.filter(
-          (product) => product.ownerId === "u1"
-        ),
+        userProducts: action.userProducts,
       };
     case DELETE_PRODUCT:
       return {
@@ -32,10 +29,17 @@ export default (state = initialState, action) => {
         }),
       };
     case CREATE_PRODUCT:
-      const { title, description, imageUrl, price, id } = action.product;
+      const {
+        title,
+        description,
+        imageUrl,
+        price,
+        id,
+        ownerId,
+      } = action.product;
       const product = new Product(
         id,
-        "u1",
+        ownerId,
         title,
         imageUrl,
         description,

@@ -13,18 +13,24 @@ import Colors from "../../styles/colors";
 
 const OrdersScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
   const orders = useSelector((state) => state.order.orders);
   const dispatch = useDispatch();
 
   const getOrders = async () => {
     setIsLoading(true);
-    await dispatch(fetchOrders());
-    setIsLoading(false);
+    try {
+      await dispatch(fetchOrders());
+      setIsLoading(false);
+    } catch (err) {
+      setIsLoading(false);
+      setError(true);
+    }
   };
 
   useEffect(() => {
     getOrders();
-  }, [dispatch]);
+  }, [dispatch, setError, setIsLoading]);
 
   if (isLoading) {
     return (
@@ -33,6 +39,22 @@ const OrdersScreen = () => {
       </View>
     );
   }
+
+  if (!isLoading && orders.length === 0) {
+    return (
+      <View style={styles.loadingWrapper}>
+        <Text>No Orders found</Text>
+      </View>
+    );
+  }
+  if (error) {
+    return (
+      <View style={styles.loadingWrapper}>
+        <Text>Something went wrong while fetching orders</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.ordersWrapper}>
       {orders.length ? (

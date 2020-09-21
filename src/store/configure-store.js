@@ -6,11 +6,13 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import productsReducer from "./reducers/products";
 import cartReducer from "./reducers/cart";
 import orderReducer from "./reducers/order";
+import authReducer from "./reducers/auth";
 
 const rootReducer = combineReducers({
   products: productsReducer,
   cart: cartReducer,
   order: orderReducer,
+  auth: authReducer,
 });
 
 export default function configureStore(preloadedState) {

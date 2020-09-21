@@ -86,18 +86,19 @@ const AuthScreen = (props) => {
       }
 
       // TODO NOT WORKING nested navigation
-      props.navigation.navigate("App", {
-        screen: "ProductsNavigator",
-        params: {
-          screen: "ProductsOverview",
-        },
-      });
+      // props.navigation.navigate("App", {
+      //   screen: "ProductsNavigator",
+      //   params: {
+      //     screen: "ProductsOverview",
+      //   },
+      // });
 
       setError(null);
+      setIsLoading(false);
     } catch (err) {
       setError(err.message);
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const onTextChangeHandler = useCallback(

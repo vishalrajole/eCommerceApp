@@ -5,10 +5,13 @@ export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
 export const FETCH_PRODUCT = "FETCH_PRODUCTS";
 
 export const fetchProducts = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const ownerId = getState().auth.userId;
+
     try {
       const response = await fetch(
-        "https://ecommerceapp-27710.firebaseio.com/products.json"
+        `https://ecommerceapp-27710.firebaseio.com/products.json?auth=${token}`
       );
 
       if (!response.ok) {
@@ -20,7 +23,7 @@ export const fetchProducts = () => {
         products.push(
           new Product(
             key,
-            "u1",
+            resData[key].ownerId,
             resData[key].title,
             resData[key].imageUrl,
             resData[key].description,
@@ -28,16 +31,21 @@ export const fetchProducts = () => {
           )
         );
       }
-      dispatch({ type: FETCH_PRODUCT, products: products });
+      dispatch({
+        type: FETCH_PRODUCT,
+        products: products,
+        userProducts: products.filter((product) => product.ownerId === ownerId),
+      });
     } catch (err) {
       throw err;
     }
   };
 };
 export const deleteProduct = (productId) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      `https://ecommerceapp-27710.firebaseio.com/products/${productId}.json`,
+      `https://ecommerceapp-27710.firebaseio.com/products/${productId}.json?auth=${token}`,
       {
         method: "DELETE",
       }
@@ -54,9 +62,11 @@ export const deleteProduct = (productId) => {
 };
 
 export const createProduct = ({ title, description, imageUrl, price }) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const userId = getState().auth.userId;
     const response = await fetch(
-      "https://ecommerceapp-27710.firebaseio.com/products.json",
+      `https://ecommerceapp-27710.firebaseio.com/products.json?auth=${token}`,
       {
         method: "POST",
         headers: {
@@ -67,6 +77,7 @@ export const createProduct = ({ title, description, imageUrl, price }) => {
           description,
           imageUrl,
           price,
+          ownerId: userId,
         }),
       }
     );
@@ -80,15 +91,18 @@ export const createProduct = ({ title, description, imageUrl, price }) => {
         description,
         imageUrl,
         price,
+        ownerId: userId,
       },
     });
   };
 };
 
 export const updateProduct = ({ productId, title, description, imageUrl }) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const userId = getState().auth.userId;
     const response = await fetch(
-      `https://ecommerceapp-27710.firebaseio.com/products/${productId}.json`,
+      `https://ecommerceapp-27710.firebaseio.com/products/${productId}.json?auth=${token}`,
       {
         method: "PATCH",
         headers: {
@@ -98,6 +112,7 @@ export const updateProduct = ({ productId, title, description, imageUrl }) => {
           title,
           description,
           imageUrl,
+          ownerId: userId,
         }),
       }
     );
@@ -112,6 +127,7 @@ export const updateProduct = ({ productId, title, description, imageUrl }) => {
         title,
         description,
         imageUrl,
+        ownerId: userId,
       },
     });
   };

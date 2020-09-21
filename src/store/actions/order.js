@@ -3,14 +3,16 @@ export const ORDER_NOW = "ORDER_NOW";
 export const FETCH_ORDERS = "FETCH_ORDERS";
 
 export const fetchOrders = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const userId = getState().auth.userId;
     try {
       const response = await fetch(
-        "https://ecommerceapp-27710.firebaseio.com/orders/u1.json"
+        `https://ecommerceapp-27710.firebaseio.com/orders/${userId}.json?auth=${token}`
       );
 
       if (!response.ok) {
-        throw new Error("Something went wrong!");
+        throw new Error("Failed to fetch orders!");
       }
       const resData = await response.json();
       const orders = [];
@@ -31,10 +33,12 @@ export const fetchOrders = () => {
   };
 };
 export const orderNow = ({ orderItems, orderAmount }) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
+    const userId = getState().auth.userId;
     const orderDate = new Date();
     const response = await fetch(
-      `https://ecommerceapp-27710.firebaseio.com/orders/u1.json`,
+      `https://ecommerceapp-27710.firebaseio.com/orders/${userId}.json?auth=${token}`,
       {
         method: "POST",
         headers: {
