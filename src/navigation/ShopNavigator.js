@@ -1,8 +1,13 @@
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, SafeAreaView, View, Button } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from "@react-navigation/drawer";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -15,7 +20,9 @@ import EditProductScreen from "../screens/user/EditProductScreen";
 import AuthScreen from "../screens/user/AuthScreen";
 import StartupScreen from "../screens/StartupScreen";
 import CustomHeaderButton from "../components/HeaderButton";
+import { logout } from "../store/actions/auth";
 import Colors from "../styles/colors";
+import { useDispatch } from "react-redux";
 
 const AppStack = createStackNavigator();
 const ProductsStack = createStackNavigator();
@@ -169,6 +176,8 @@ const AdminStackNavigator = () => {
 };
 
 const DrawerNavigator = () => {
+  const dispatch = useDispatch();
+
   return (
     <Drawer.Navigator
       screenOptions={defaultScreenOptions}
@@ -179,6 +188,25 @@ const DrawerNavigator = () => {
       }}
       drawerContentOptions={{
         activeTintColor: Colors.primary,
+      }}
+      drawerContent={(props) => {
+        return (
+          <View style={{ flex: 1 }}>
+            <DrawerContentScrollView>
+              <DrawerItemList {...props} />
+              <View style={{ padding: 10 }}>
+                <Button
+                  title="Logout"
+                  color={Colors.primary}
+                  onPress={() => {
+                    dispatch(logout());
+                    props.navigation.navigate("Auth");
+                  }}
+                />
+              </View>
+            </DrawerContentScrollView>
+          </View>
+        );
       }}
     >
       <Drawer.Screen

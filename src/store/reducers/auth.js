@@ -1,4 +1,4 @@
-import { AUTHENTICATE } from "../actions/auth";
+import { AUTHENTICATE, LOGOUT } from "../actions/auth";
 
 // test@test.com 123456
 const initialState = {
@@ -15,6 +15,8 @@ export default (state = initialState, action) => {
         userId: action.userId,
       };
 
+    case LOGOUT:
+      return initialState;
     default:
       return state;
   }
