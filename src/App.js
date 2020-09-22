@@ -5,7 +5,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { AppLoading } from "expo";
 import { useFonts } from "expo-font";
 import configureStore from "./store/configure-store";
-import ShopNavigator from "./navigation/ShopNavigator";
+import NavigationWrapper from "./navigation/NavigationWrapper";
+import { navigationRef } from "./navigation/NavigationWrapper";
 
 const store = configureStore();
 
@@ -26,8 +27,8 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <ShopNavigator />
+      <NavigationContainer ref={navigationRef}>
+        <NavigationWrapper />
       </NavigationContainer>
     </Provider>
   );

@@ -200,7 +200,7 @@ const DrawerNavigator = () => {
                   color={Colors.primary}
                   onPress={() => {
                     dispatch(logout());
-                    props.navigation.navigate("Auth");
+                    // props.navigation.navigate("Auth");
                   }}
                 />
               </View>

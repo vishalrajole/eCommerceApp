@@ -21,8 +21,10 @@ const StartupScreen = (props) => {
           props.navigation.navigate("Auth");
           return;
         }
+        const expirationTime = expirationDate.getTime() - new Date().getTime();
+
         props.navigation.navigate("App");
-        dispatch(authenticate(token, userId));
+        dispatch(authenticate(token, userId, expirationTime));
       } catch (e) {
         console.log("failed to fetch stored token");
       }
