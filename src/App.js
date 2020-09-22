@@ -5,8 +5,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { AppLoading } from "expo";
 import { useFonts } from "expo-font";
 import configureStore from "./store/configure-store";
-import NavigationWrapper from "./navigation/NavigationWrapper";
-import { navigationRef } from "./navigation/NavigationWrapper";
+import {
+  navigationRef,
+  NavigationWrapper,
+} from "./navigation/NavigationWrapper";
 
 const store = configureStore();
 

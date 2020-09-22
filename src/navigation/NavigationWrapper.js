@@ -2,9 +2,11 @@ import React, { useEffect, useRef } from "react";
 import ShopNavigator from "./ShopNavigator";
 import { useSelector } from "react-redux";
 
-export const navigationRef = useRef(null);
+let navigationRef = null;
 
 const NavigationWrapper = (props) => {
+  navigationRef = useRef(null);
+
   const isAuth = useSelector((state) => !!state.auth.token);
 
   useEffect(() => {
@@ -13,7 +15,7 @@ const NavigationWrapper = (props) => {
     }
   }, [isAuth]);
 
-  return <ShopNavigator ref={navRef} />;
+  return <ShopNavigator />;
 };
 
-export default NavigationWrapper;
+export { NavigationWrapper, navigationRef };
