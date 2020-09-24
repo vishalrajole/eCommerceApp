@@ -1,14 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet } from "react-native";
 import { Provider } from "react-redux";
-import { NavigationContainer } from "@react-navigation/native";
 import { AppLoading } from "expo";
 import { useFonts } from "expo-font";
 import configureStore from "./store/configure-store";
-import {
-  navigationRef,
-  NavigationWrapper,
-} from "./navigation/NavigationWrapper";
+import AppNavigator from "./navigation/AppNavigator";
 
 const store = configureStore();
 
@@ -29,9 +25,7 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <NavigationContainer ref={navigationRef}>
-        <NavigationWrapper />
-      </NavigationContainer>
+      <AppNavigator />
     </Provider>
   );
 };

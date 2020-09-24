@@ -1,12 +1,11 @@
 import React from "react";
-import { Platform, SafeAreaView, View, Button } from "react-native";
+import { Platform, View, Button } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
   DrawerItemList,
-  DrawerItem,
 } from "@react-navigation/drawer";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { Ionicons } from "@expo/vector-icons";
@@ -48,7 +47,7 @@ const defaultScreenOptions = {
   },
 };
 
-const ProductsNavigator = () => {
+export const ProductsNavigator = () => {
   return (
     <ProductsStack.Navigator
       screenOptions={defaultScreenOptions}
@@ -111,7 +110,7 @@ const ProductsNavigator = () => {
   );
 };
 
-const OrdersStackNavigator = () => {
+export const OrdersStackNavigator = () => {
   return (
     <OrdersStack.Navigator screenOptions={defaultScreenOptions}>
       <OrdersStack.Screen
@@ -136,7 +135,7 @@ const OrdersStackNavigator = () => {
   );
 };
 
-const AdminStackNavigator = () => {
+export const AdminStackNavigator = () => {
   return (
     <AdminStack.Navigator screenOptions={defaultScreenOptions}>
       <AdminStack.Screen
@@ -175,7 +174,7 @@ const AdminStackNavigator = () => {
   );
 };
 
-const DrawerNavigator = () => {
+export const DrawerNavigator = () => {
   const dispatch = useDispatch();
 
   return (
@@ -258,7 +257,7 @@ const DrawerNavigator = () => {
   );
 };
 
-const AuthNavigator = () => {
+export const AuthNavigator = () => {
   return (
     <AuthStack.Navigator screenOptions={defaultScreenOptions}>
       <AuthStack.Screen
@@ -272,21 +271,21 @@ const AuthNavigator = () => {
   );
 };
 
-const AppNavigator = ({ userToken = true }) => {
-  return (
-    <AppStack.Navigator
-      screenOptions={defaultScreenOptions}
-      headerMode="none"
-      initialRouteName="SignUp"
-    >
-      {userToken ? (
-        <AppStack.Screen name="App" component={DrawerNavigator} />
-      ) : (
-        // <AppStack.Screen name="SignUp" component={AuthNavigator} />
-        <AppStack.Screen name="StartupScreen" component={StartupScreen} />
-      )}
-    </AppStack.Navigator>
-  );
-};
+// const AppNavigator = ({ userToken = true }) => {
+//   return (
+//     <AppStack.Navigator
+//       screenOptions={defaultScreenOptions}
+//       headerMode="none"
+//       initialRouteName="SignUp"
+//     >
+//       {userToken ? (
+//         <AppStack.Screen name="App" component={DrawerNavigator} />
+//       ) : (
+//         // <AppStack.Screen name="SignUp" component={AuthNavigator} />
+//         <AppStack.Screen name="StartupScreen" component={StartupScreen} />
+//       )}
+//     </AppStack.Navigator>
+//   );
+// };
 
-export default AppNavigator;
+// export default AppNavigator;
