@@ -85,14 +85,6 @@ const AuthScreen = (props) => {
         );
       }
 
-      // TODO NOT WORKING nested navigation
-      // props.navigation.navigate("App", {
-      //   screen: "ProductsNavigator",
-      //   params: {
-      //     screen: "ProductsOverview",
-      //   },
-      // });
-
       setError(null);
       setIsLoading(false);
     } catch (err) {

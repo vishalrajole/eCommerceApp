@@ -270,22 +270,3 @@ export const AuthNavigator = () => {
     </AuthStack.Navigator>
   );
 };
-
-// const AppNavigator = ({ userToken = true }) => {
-//   return (
-//     <AppStack.Navigator
-//       screenOptions={defaultScreenOptions}
-//       headerMode="none"
-//       initialRouteName="SignUp"
-//     >
-//       {userToken ? (
-//         <AppStack.Screen name="App" component={DrawerNavigator} />
-//       ) : (
-//         // <AppStack.Screen name="SignUp" component={AuthNavigator} />
-//         <AppStack.Screen name="StartupScreen" component={StartupScreen} />
-//       )}
-//     </AppStack.Navigator>
-//   );
-// };
-
-// export default AppNavigator;
