@@ -5,8 +5,11 @@
     "name": "eCommerceApp",
     "slug": "eCommerceApp",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "assetBundlePatterns": ["**/*"],
+    "splash": {
+      "image": "./src/assets/splash.png",
+      "resizeMod": "contain",
+      "backgrounColor": "#ffffff"
+    }
   }
 }

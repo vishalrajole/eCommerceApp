@@ -1,6 +1,5 @@
 import { AUTHENTICATE, LOGOUT, AUTO_LOGIN_TRY } from "../actions/auth";
 
-// test@test.com 123456
 const initialState = {
   token: null,
   userId: null,
