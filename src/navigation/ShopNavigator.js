@@ -8,8 +8,7 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import { Ionicons } from "@expo/vector-icons";
-
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import ProductsOverviewScreen from "../screens/shop/ProductOverviewScreen";
 import ProductDetailsScreen from "../screens/shop/ProductDetailsScreen";
 import UserProductScreen from "../screens/user/UserProductScreen";
@@ -17,18 +16,23 @@ import CartScreen from "../screens/shop/CartScreen";
 import OrdersScreen from "../screens/shop/OrdersScreen";
 import EditProductScreen from "../screens/user/EditProductScreen";
 import AuthScreen from "../screens/user/AuthScreen";
-import StartupScreen from "../screens/StartupScreen";
+
+import NewPlaceScreen from "../screens/places/NewPlaceScreen";
+import PlaceDetailsScreen from "../screens/places/PlaceDetailsScreen";
+import PlacesListScreen from "../screens/places/PlacesListScreen";
+import MapScreen from "../screens/places/MapScreen";
+
 import CustomHeaderButton from "../components/HeaderButton";
 import { logout } from "../store/actions/auth";
 import Colors from "../styles/colors";
 import { useDispatch } from "react-redux";
 
-const AppStack = createStackNavigator();
 const ProductsStack = createStackNavigator();
 const OrdersStack = createStackNavigator();
 const AdminStack = createStackNavigator();
 const AuthStack = createStackNavigator();
-const Tab = createBottomTabNavigator();
+//const PlacesTabStack = createBottomTabNavigator();
+const PlacesStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const defaultScreenOptions = {
@@ -174,6 +178,68 @@ export const AdminStackNavigator = () => {
   );
 };
 
+export const PlacesNavigator = () => {
+  return (
+    <PlacesStack.Navigator
+      initialRouteName={"Places"}
+      screenOptions={defaultScreenOptions}
+    >
+      <PlacesStack.Screen
+        name="Places"
+        component={PlacesListScreen}
+        options={({ routes, navigation }) => ({
+          title: "Places",
+          headerLeft: () => (
+            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+              <Item
+                title="Menu"
+                iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
+                onPress={() => {
+                  navigation.toggleDrawer();
+                }}
+              ></Item>
+            </HeaderButtons>
+          ),
+          headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+              <Item
+                title="Create"
+                iconName={
+                  Platform.OS === "android" ? "md-create" : "ios-create"
+                }
+                onPress={() => {
+                  navigation.navigate("NewPlace");
+                }}
+              ></Item>
+            </HeaderButtons>
+          ),
+        })}
+      />
+      <PlacesStack.Screen
+        name="PlaceDetails"
+        component={PlaceDetailsScreen}
+        options={({ routes, navigation }) => ({
+          title: "Place Details",
+        })}
+      />
+      <PlacesStack.Screen
+        name="NewPlace"
+        component={NewPlaceScreen}
+        options={({ routes, navigation }) => ({
+          title: "New Place",
+        })}
+      />
+      <PlacesStack.Screen
+        name="Map"
+        component={MapScreen}
+        options={({ routes, navigation }) => ({
+          title: "Map",
+        })}
+      />
+    </PlacesStack.Navigator>
+  );
+};
+
 export const DrawerNavigator = () => {
   const dispatch = useDispatch();
 
@@ -252,6 +318,21 @@ export const DrawerNavigator = () => {
           },
         }}
       />
+      <Drawer.Screen
+        name="Places"
+        component={PlacesNavigator}
+        options={{
+          drawerIcon: (drawerConfig) => {
+            return (
+              <Ionicons
+                name={Platform.OS === "android" ? "md-globe" : "ios-globe"}
+                size={23}
+                color={drawerConfig.tintColor}
+              />
+            );
+          },
+        }}
+      />
     </Drawer.Navigator>
   );
 };
@@ -269,3 +350,58 @@ export const AuthNavigator = () => {
     </AuthStack.Navigator>
   );
 };
+
+// export const PlacesNavigator = () => {
+//   return (
+//     <PlacesTabStack.Navigator
+//       initialRouteName={"Places"}
+//       screenOptions={({ route }) => ({
+//         tabBarIcon: ({ focused, color, size }) => {},
+//       })}
+//       tabBarOptions={{
+//         activeTintColor: Colors.primary,
+//       }}
+//     >
+//       <PlacesTabStack.Screen
+//         name="Places"
+//         component={PlacesListScreen}
+//         options={{
+//           tabBarLabel: "Places",
+//           tabBarIcon: ({ color, size }) => (
+//             <MaterialIcons name="place" color={color} size={size} />
+//           ),
+//         }}
+//       />
+//       <PlacesTabStack.Screen
+//         name="PlaceDetails"
+//         component={PlaceDetailsScreen}
+//         options={{
+//           tabBarLabel: "Place Details",
+//           tabBarIcon: ({ color, size }) => (
+//             <MaterialIcons name="place" color={color} size={size} />
+//           ),
+//         }}
+//       />
+//       <PlacesTabStack.Screen
+//         name="NewPlace"
+//         component={NewPlaceScreen}
+//         options={{
+//           tabBarLabel: "New Place",
+//           tabBarIcon: ({ color, size }) => (
+//             <MaterialIcons name="place" color={color} size={size} />
+//           ),
+//         }}
+//       />
+//       <PlacesTabStack.Screen
+//         name="Map"
+//         component={MapScreen}
+//         options={{
+//           tabBarLabel: "Map",
+//           tabBarIcon: ({ color, size }) => (
+//             <MaterialIcons name="place" color={color} size={size} />
+//           ),
+//         }}
+//       />
+//     </PlacesTabStack.Navigator>
+//   );
+// };
