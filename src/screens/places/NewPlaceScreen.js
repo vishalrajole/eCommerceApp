@@ -42,17 +42,16 @@ const formReducer = (state, action) => {
 
 const NewPlaceScreen = ({ navigation }) => {
   const dispatch = useDispatch();
+  const [imgUri, setImageUri] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       title: "",
-      //imageUrl: "",
     },
     inputValidities: {
       title: false,
-      //imageUrl: false,
     },
     isFormValid: false,
   });
@@ -69,6 +68,10 @@ const NewPlaceScreen = ({ navigation }) => {
     [dispatchFormState]
   );
 
+  const onImageSelect = (imageUri) => {
+    setImageUri(imageUri);
+  };
+
   const addPlaceHandler = useCallback(async () => {
     if (!formState.isFormValid) {
       Alert.alert("Form Error", "Please fill all details", [{ text: "Close" }]);
@@ -77,14 +80,19 @@ const NewPlaceScreen = ({ navigation }) => {
     setIsLoading(true);
     setError(null);
     try {
-      await dispatch(addPlace(formState.inputValues.title));
-      //  imageUrl: formState.inputValues.imageUrl,
+      await dispatch(
+        addPlace({
+          title: formState.inputValues.title,
+          imageUri: imgUri,
+        })
+      );
+
       navigation.goBack();
     } catch (err) {
       setError(err.message);
     }
     setIsLoading(false);
-  }, [dispatch, formState]);
+  }, [dispatch, formState, imgUri]);
 
   if (isLoading) {
     return (
@@ -117,7 +125,7 @@ const NewPlaceScreen = ({ navigation }) => {
             isInitiallyValid={true}
             required
           />
-          <ImagePicker />
+          <ImagePicker onImageSelect={onImageSelect} />
           <Button
             title="Save place"
             color={Colors.primary}

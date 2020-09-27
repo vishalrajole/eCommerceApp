@@ -25,7 +25,6 @@ const PlacesListScreen = ({ navigation }) => {
     } catch (err) {
       setError(true);
     }
-
     setIsLoading(false);
   };
 
@@ -66,7 +65,7 @@ const PlacesListScreen = ({ navigation }) => {
               id: itemData.item.id,
             });
           }}
-          image={null}
+          image={itemData.item.imageUri}
           title={itemData.item.title}
           address={null}
         />

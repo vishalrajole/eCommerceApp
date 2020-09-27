@@ -19,7 +19,14 @@ export const fetchPlaces = () => {
       const resData = await response.json();
       const places = [];
       for (const key in resData) {
-        places.push(new Place(key, resData[key].title, resData[key].ownerId));
+        places.push(
+          new Place(
+            key,
+            resData[key].title,
+            resData[key].ownerId,
+            resData[key].imageUri
+          )
+        );
       }
       dispatch({
         type: FETCH_PLACES,
@@ -31,33 +38,38 @@ export const fetchPlaces = () => {
   };
 };
 
-export const addPlace = (title) => {
+export const addPlace = ({ title, imageUri = "not provided" }) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
-    const response = await fetch(
-      `https://ecommerceapp-27710.firebaseio.com/places.json?auth=${token}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          ownerId: userId,
-        }),
-      }
-    );
+    try {
+      const response = await fetch(
+        `https://ecommerceapp-27710.firebaseio.com/places.json?auth=${token}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title,
+            imageUri,
+            ownerId: userId,
+          }),
+        }
+      );
 
-    const resData = await response.json();
-    console.log("resData: ", resData);
-    dispatch({
-      type: ADD_PLACE,
-      place: {
-        id: resData.name,
-        title,
-        ownerId: userId,
-      },
-    });
+      const resData = await response.json();
+      dispatch({
+        type: ADD_PLACE,
+        place: {
+          id: resData.name,
+          title,
+          imageUri,
+          ownerId: userId,
+        },
+      });
+    } catch (err) {
+      throw err;
+    }
   };
 };

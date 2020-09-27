@@ -8,8 +8,8 @@ const initialState = {
 export default (state = initialState, actions) => {
   switch (actions.type) {
     case ADD_PLACE:
-      const { title, ownerId } = actions.place;
-      const place = new Place(id, title, ownerId);
+      const { title, ownerId, id, imageUri } = actions.place;
+      const place = new Place(id, title, ownerId, imageUri);
       return {
         ...state,
         places: state.places.concat(place),

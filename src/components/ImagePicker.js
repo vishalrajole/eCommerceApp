@@ -4,7 +4,7 @@ import * as Permissions from "expo-permissions";
 import { StyleSheet, Text, View, Button, Image, Alert } from "react-native";
 import Colors from "../styles/colors";
 
-const ImgPicker = () => {
+const ImgPicker = (props) => {
   const [image, setImage] = useState(null);
 
   const verifyPermissions = async () => {
@@ -28,25 +28,27 @@ const ImgPicker = () => {
     if (!hasPermissions) {
       return;
     }
-    let result = await ImagePicker.launchCameraAsync({
+    const image = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.5,
     });
 
-    console.log(result);
-
-    if (!result.cancelled) {
-      setImage(result.uri);
+    if (!image.cancelled) {
+      setImage(image.uri);
     }
+    props.onImageSelect(image.uri);
   };
 
   return (
     <View style={styles.imagePicker}>
       <View style={styles.preview}>
-        {!image && <Text style={styles.noImage}>No Image selected</Text>}
-        {image && <Image source={{ uri: image }} style={styles.image} />}
+        {!image ? (
+          <Text style={styles.noImage}>No Image selected</Text>
+        ) : (
+          <Image source={{ uri: image }} style={styles.image} />
+        )}
 
         <Button title={"Upload"} color={Colors.primary} onPress={pickImage} />
       </View>
@@ -57,6 +59,7 @@ const ImgPicker = () => {
 const styles = StyleSheet.create({
   imagePicker: {
     alignItems: "center",
+    marginBottom: 15,
   },
   preview: {
     width: "100%",
