@@ -7,12 +7,14 @@ import productsReducer from "./reducers/products";
 import cartReducer from "./reducers/cart";
 import orderReducer from "./reducers/order";
 import authReducer from "./reducers/auth";
+import placeReducer from "./reducers/places";
 
 const rootReducer = combineReducers({
   products: productsReducer,
   cart: cartReducer,
   order: orderReducer,
   auth: authReducer,
+  place: placeReducer,
 });
 
 export default function configureStore(preloadedState) {
