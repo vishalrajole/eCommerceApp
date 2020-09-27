@@ -1,5 +1,5 @@
 import Place from "../../__mocks__/place";
-
+import * as FileSystem from "expo-file-system";
 export const ADD_PLACE = "ADD_PLACE";
 export const FETCH_PLACES = "FETCH_PLACES";
 
@@ -38,7 +38,7 @@ export const fetchPlaces = () => {
   };
 };
 
-export const addPlace = ({ title, imageUri = "not provided" }) => {
+export const addPlace = ({ title, imageUri }) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
@@ -58,13 +58,25 @@ export const addPlace = ({ title, imageUri = "not provided" }) => {
         }
       );
 
+      const fileName = imageUri.split("/").pop();
+      const newPath = FileSystem.documentDirectory + fileName;
+      try {
+        await FileSystem.moveAsync({
+          from: imageUri,
+          to: newPath,
+        });
+      } catch (err) {
+        console.log("failed to move file", err);
+        throw err;
+      }
+
       const resData = await response.json();
       dispatch({
         type: ADD_PLACE,
         place: {
           id: resData.name,
           title,
-          imageUri,
+          imageUri: newPath,
           ownerId: userId,
         },
       });
