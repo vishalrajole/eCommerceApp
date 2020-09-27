@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Button, ScrollView, Text } from "react-native";
+import { StyleSheet, View, Button, ScrollView } from "react-native";
 import { useDispatch } from "react-redux";
 import Colors from "../../styles/colors";
 import { addPlace } from "../../store/actions/places";
@@ -49,4 +49,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
 export default NewPlaceScreen;
