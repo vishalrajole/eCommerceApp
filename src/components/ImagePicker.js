@@ -1,12 +1,30 @@
 import React, { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
-import { StyleSheet, Text, View, Button, Image } from "react-native";
+import * as Permissions from "expo-permissions";
+import { StyleSheet, Text, View, Button, Image, Alert } from "react-native";
 import Colors from "../styles/colors";
 
 const ImgPicker = () => {
   const [image, setImage] = useState(null);
 
+  const verifyPermissions = async () => {
+    const result = await Permissions.askAsync(Permissions.CAMERA);
+
+    if (result.status !== "granted") {
+      Alert.alert("Permissions", "Please grant camera permissions", [
+        { text: "Okay" },
+      ]);
+      return false;
+    }
+    return true;
+  };
+
   const pickImage = async () => {
+    const hasPermissions = await verifyPermissions();
+
+    if (!hasPermissions) {
+      return;
+    }
     let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
