@@ -54,6 +54,7 @@ const Input = (props) => {
     }
     dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid });
   };
+
   const onBlurHandler = () => {
     dispatch({ type: INPUT_BLUR });
   };
