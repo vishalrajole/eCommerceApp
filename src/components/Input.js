@@ -68,7 +68,7 @@ const Input = (props) => {
         value={inputState.value}
         onChangeText={textChangeHandler}
         onBlur={onBlurHandler}
-        autoCapitalize={"sentences"}
+        autoCapitalize={props.autoCapitalize}
       />
       {!inputState.isValid && inputState.touched && (
         <View style={styles.errorContainer}>
