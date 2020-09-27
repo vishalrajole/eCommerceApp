@@ -1,7 +1,20 @@
 import Place from "../../__mocks__/place";
 import * as FileSystem from "expo-file-system";
+// import { insertPlace, fetchPlacesFromDB } from "../../helpers/db";
+
 export const ADD_PLACE = "ADD_PLACE";
 export const FETCH_PLACES = "FETCH_PLACES";
+
+// export const loadPlacesFromDB = () => {
+//   return async (dispatch) => {
+//     try {
+//       const dbResult = await fetchPlacesFromDB();
+//       console.log("dbResult: ", dbResult.rows._array);
+//     } catch (err) {
+//       console.log("error in loadPlacesFromDB", err);
+//     }
+//   };
+// };
 
 export const fetchPlaces = () => {
   return async (dispatch, getState) => {
@@ -57,7 +70,7 @@ export const addPlace = ({ title, imageUri }) => {
           }),
         }
       );
-
+      const resData = await response.json();
       const fileName = imageUri.split("/").pop();
       const newPath = FileSystem.documentDirectory + fileName;
       try {
@@ -65,22 +78,32 @@ export const addPlace = ({ title, imageUri }) => {
           from: imageUri,
           to: newPath,
         });
+
+        // const dbResult = await insertPlace(
+        //   title,
+        //   newPath,
+        //   "DummyAddress",
+        //   15.6,
+        //   12.3,
+        //   resData.name
+        // );
+        // console.log("added into DB: ", dbResult);
+
+        dispatch({
+          type: ADD_PLACE,
+          place: {
+            id: resData.name,
+            title,
+            imageUri: newPath,
+            ownerId: userId,
+          },
+        });
       } catch (err) {
         console.log("failed to move file", err);
         throw err;
       }
-
-      const resData = await response.json();
-      dispatch({
-        type: ADD_PLACE,
-        place: {
-          id: resData.name,
-          title,
-          imageUri: newPath,
-          ownerId: userId,
-        },
-      });
     } catch (err) {
+      console.log("failed to add place", err);
       throw err;
     }
   };

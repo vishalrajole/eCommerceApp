@@ -7,7 +7,7 @@ import {
   FlatList,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPlaces } from "../../store/actions/places";
+import { fetchPlaces, loadPlacesFromDB } from "../../store/actions/places";
 import PlaceItem from "../../components/PlaceItem";
 import Colors from "../../styles/colors";
 
@@ -28,8 +28,18 @@ const PlacesListScreen = ({ navigation }) => {
     setIsLoading(false);
   };
 
+  /* loads places from local sqlite db */
+  // const loadDBPlaces = async () => {
+  //   try {
+  //     const result = await dispatch(fetchPlacesFromDB());
+  //   } catch (err) {
+  //     setError(true);
+  //   }
+  // };
+
   useEffect(() => {
     getPlaces();
+    // loadDBPlaces();
   }, [dispatch, setIsLoading, setError]);
 
   if (isLoading) {
