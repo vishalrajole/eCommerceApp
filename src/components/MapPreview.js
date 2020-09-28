@@ -12,11 +12,10 @@ const MapPreview = (props) => {
     &markers=color:red%7Clabel:C%7C${location.lat},${location.long}
     &key=${googleApiKey}`;
   }
-  console.log("imagePreview: ", imagePreviewUrl);
 
   return (
     <View style={{ ...styles.mapPreview, ...props.style }}>
-      {location ? (
+      {imagePreviewUrl ? (
         <Image style={styles.mapImage} source={{ uri: imagePreviewUrl }} />
       ) : (
         props.children
