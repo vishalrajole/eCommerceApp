@@ -14,6 +14,7 @@ import Colors from "../../styles/colors";
 import { addPlace } from "../../store/actions/places";
 import Input from "../../components/Input";
 import ImagePicker from "../../components/ImagePicker";
+import LocationPicker from "../../components/LocationPicker";
 
 const FORM_UPDATE = "FORM_UPDATE";
 
@@ -72,6 +73,8 @@ const NewPlaceScreen = ({ navigation }) => {
     setImageUri(imageUri);
   };
 
+  const onLocationSelect = () => {};
+
   const addPlaceHandler = useCallback(async () => {
     if (!formState.isFormValid) {
       Alert.alert("Form Error", "Please fill all details", [{ text: "Close" }]);
@@ -126,6 +129,7 @@ const NewPlaceScreen = ({ navigation }) => {
             required
           />
           <ImagePicker onImageSelect={onImageSelect} />
+          <LocationPicker onLocationSelect={onLocationSelect} />
           <Button
             title="Save place"
             color={Colors.primary}
