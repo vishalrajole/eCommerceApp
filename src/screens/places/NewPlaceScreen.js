@@ -43,7 +43,10 @@ const formReducer = (state, action) => {
 
 const NewPlaceScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const [imgUri, setImageUri] = useState("");
+
+  const [selectedImage, setSelectedImage] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState();
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
@@ -69,24 +72,32 @@ const NewPlaceScreen = ({ navigation }) => {
     [dispatchFormState]
   );
 
-  const onImageSelect = (imageUri) => {
-    setImageUri(imageUri);
+  const onImageSelect = (selectedImage) => {
+    setSelectedImage(selectedImage);
   };
 
-  const onLocationSelect = () => {};
+  const onLocationPicked = useCallback((location) => {
+    setSelectedLocation(location);
+  }, []);
 
-  const addPlaceHandler = useCallback(async () => {
-    if (!formState.isFormValid) {
+  const savePlaceHandler = useCallback(async () => {
+    if (!formState.isFormValid || !selectedImage || !selectedLocation) {
       Alert.alert("Form Error", "Please fill all details", [{ text: "Close" }]);
       return;
     }
     setIsLoading(true);
     setError(null);
+    console.log(
+      "inside NewPlace savePlaceHandler:",
+      selectedImage,
+      selectedLocation
+    );
     try {
       await dispatch(
         addPlace({
           title: formState.inputValues.title,
-          imageUri: imgUri,
+          selectedImage: selectedImage,
+          selectedLocation: selectedLocation,
         })
       );
 
@@ -95,7 +106,7 @@ const NewPlaceScreen = ({ navigation }) => {
       setError(err.message);
     }
     setIsLoading(false);
-  }, [dispatch, formState, imgUri]);
+  }, [dispatch, formState, selectedImage]);
 
   if (isLoading) {
     return (
@@ -104,10 +115,11 @@ const NewPlaceScreen = ({ navigation }) => {
       </View>
     );
   }
+
   if (error) {
     return (
       <View style={styles.loading}>
-        <Text>An Error Occured!</Text>
+        <Text>{error ? error : "An Error Occured!"}</Text>
       </View>
     );
   }
@@ -129,11 +141,11 @@ const NewPlaceScreen = ({ navigation }) => {
             required
           />
           <ImagePicker onImageSelect={onImageSelect} />
-          <LocationPicker onLocationSelect={onLocationSelect} />
+          <LocationPicker onLocationPicked={onLocationPicked} />
           <Button
             title="Save place"
             color={Colors.primary}
-            onPress={addPlaceHandler}
+            onPress={savePlaceHandler}
             disabled={!formState.isFormValid}
           />
         </View>

@@ -3,7 +3,6 @@ import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
 import { googleApiKey } from "../env";
 
 const MapPreview = (props) => {
-  console.log("MapPreviewLocation: ", props.location);
   const { location } = props;
   let imagePreviewUrl;
 

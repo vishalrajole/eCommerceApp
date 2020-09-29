@@ -1,5 +1,7 @@
 import Place from "../../__mocks__/place";
 import * as FileSystem from "expo-file-system";
+import { googleApiKey } from "../../env";
+
 // import { insertPlace, fetchPlacesFromDB } from "../../helpers/db";
 
 export const ADD_PLACE = "ADD_PLACE";
@@ -51,10 +53,27 @@ export const fetchPlaces = () => {
   };
 };
 
-export const addPlace = ({ title, imageUri }) => {
+const getAddress = async (selectedLocation) => {
+  const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${selectedLocation.lat},${selectedLocation.long}&key=${googleApiKey}
+  `);
+  if (!response.ok) {
+    throw new Error("Failed to fetch address from selected location");
+  }
+  const addressResData = await response.json();
+
+  if (!addressResData.results) {
+    throw new Error("Failed to fetch address from selected location again");
+  }
+  const address = addressResData?.results[0]?.formatted_address;
+  return address;
+};
+
+export const addPlace = ({ title, selectedImage, selectedLocation }) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
     const userId = getState().auth.userId;
+    const address = await getAddress(selectedLocation);
+
     try {
       const response = await fetch(
         `https://ecommerceapp-27710.firebaseio.com/places.json?auth=${token}`,
@@ -65,17 +84,20 @@ export const addPlace = ({ title, imageUri }) => {
           },
           body: JSON.stringify({
             title,
-            imageUri,
+            selectedImage,
+            address,
+            lat: selectedLocation.lat,
+            long: selectedLocation.long,
             ownerId: userId,
           }),
         }
       );
       const resData = await response.json();
-      const fileName = imageUri.split("/").pop();
+      const fileName = selectedImage.split("/").pop();
       const newPath = FileSystem.documentDirectory + fileName;
       try {
         await FileSystem.moveAsync({
-          from: imageUri,
+          from: selectedImage,
           to: newPath,
         });
 
@@ -95,6 +117,8 @@ export const addPlace = ({ title, imageUri }) => {
             id: resData.name,
             title,
             imageUri: newPath,
+            address,
+            location: selectedLocation,
             ownerId: userId,
           },
         });

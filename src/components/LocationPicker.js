@@ -14,10 +14,10 @@ import * as Permissions from "expo-permissions";
 import MapPreview from "./MapPreview";
 import Colors from "../styles/colors";
 
-const LocationPicker = () => {
+const LocationPicker = ({ onLocationPicked }) => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { pickedLocation } = route.params;
+  const pickedLocation = route?.params?.pickedLocation;
 
   const [location, setLocation] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -25,8 +25,9 @@ const LocationPicker = () => {
   useEffect(() => {
     if (pickedLocation) {
       setLocation(pickedLocation);
+      onLocationPicked(pickedLocation);
     }
-  }, [pickedLocation]);
+  }, [pickedLocation, onLocationPicked]);
 
   const verifyPermissions = async () => {
     const result = await Permissions.askAsync(Permissions.LOCATION);
@@ -49,10 +50,12 @@ const LocationPicker = () => {
     try {
       setIsLoading(true);
       const loc = await Location.getCurrentPositionAsync({ timeout: 5000 });
-      setLocation(loc);
       setIsLoading(false);
       setLocation({ lat: loc.coords.latitude, long: loc.coords.longitude });
-      console.log("loc", loc.coords.latitude, loc.coords.longitude);
+      onLocationPicked({
+        lat: loc.coords.latitude,
+        long: loc.coords.longitude,
+      });
     } catch (err) {
       Alert.alert("Location", "Please try again", [{ text: "Okay" }]);
       setIsLoading(false);
