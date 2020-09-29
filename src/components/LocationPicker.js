@@ -7,12 +7,16 @@ import {
   Alert,
   ActivityIndicator,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import MapPreview from "./MapPreview";
 import Colors from "../styles/colors";
 
 const LocationPicker = () => {
+  const navigation = useNavigation();
+
   const [location, setLocation] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const verifyPermissions = async () => {
@@ -46,20 +50,35 @@ const LocationPicker = () => {
     }
   };
 
+  const pickOnMapHandler = () => {
+    navigation.navigate("Map");
+  };
+
   return (
     <View style={styles.locationPicker}>
-      <MapPreview location={location} style={styles.mapPreview}>
+      <MapPreview
+        location={location}
+        style={styles.mapPreview}
+        onPress={pickOnMapHandler}
+      >
         {isLoading ? (
           <ActivityIndicator size={"large"} color={Colors.primary} />
         ) : (
           <Text>No location selected</Text>
         )}
       </MapPreview>
-      <Button
-        color={Colors.primary}
-        onPress={getLocationHandler}
-        title="Get Location"
-      />
+      <View style={styles.actions}>
+        <Button
+          color={Colors.primary}
+          onPress={getLocationHandler}
+          title="Get Location"
+        />
+        <Button
+          color={Colors.primary}
+          onPress={pickOnMapHandler}
+          title="Pick on Map"
+        />
+      </View>
     </View>
   );
 };
@@ -74,6 +93,11 @@ const styles = StyleSheet.create({
     height: 150,
     borderColor: "#ccc",
     borderWidth: 1,
+  },
+  actions: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
   },
 });
 
