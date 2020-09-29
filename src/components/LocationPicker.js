@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   StyleSheet,
@@ -7,7 +7,7 @@ import {
   Alert,
   ActivityIndicator,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
@@ -16,9 +16,18 @@ import Colors from "../styles/colors";
 
 const LocationPicker = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { pickedLocation } = route.params;
 
   const [location, setLocation] = useState();
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (pickedLocation) {
+      setLocation(pickedLocation);
+    }
+  }, [pickedLocation]);
+
   const verifyPermissions = async () => {
     const result = await Permissions.askAsync(Permissions.LOCATION);
 

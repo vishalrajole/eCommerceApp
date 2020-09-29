@@ -210,7 +210,7 @@ export const PlacesNavigator = () => {
                 onPress={() => {
                   navigation.navigate("NewPlace");
                 }}
-              ></Item>
+              />
             </HeaderButtons>
           ),
         })}
