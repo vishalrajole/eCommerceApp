@@ -3,7 +3,6 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import Colors from "../styles/colors";
 
 const PlaceItem = (props) => {
-  console.log("props: ", props.image);
   return (
     <TouchableOpacity onPress={props.onSelect} style={styles.placeItem}>
       <Image style={styles.image} source={{ uri: props.image }} />

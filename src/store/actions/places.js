@@ -32,7 +32,6 @@ export const fetchPlaces = () => {
         throw new Error("Something went wrong!");
       }
       const resData = await response.json();
-      console.log("resData: ", resData);
       const places = [];
       for (const key in resData) {
         places.push(

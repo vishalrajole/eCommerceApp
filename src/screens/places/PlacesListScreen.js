@@ -15,7 +15,6 @@ const PlacesListScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const places = useSelector((state) => state.place.places);
-  console.log("places: ", places);
   const dispatch = useDispatch();
 
   const getPlaces = async () => {
