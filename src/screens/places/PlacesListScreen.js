@@ -71,7 +71,6 @@ const PlacesListScreen = ({ navigation }) => {
       renderItem={(itemData) => (
         <PlaceItem
           onSelect={() => {
-            console.log("itemData.item.address: ", itemData.item);
             navigation.navigate("PlaceDetails", {
               title: itemData.item.title,
               id: itemData.item.id,

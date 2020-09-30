@@ -42,7 +42,8 @@ export const fetchPlaces = () => {
             resData[key].ownerId,
             resData[key].imageUri,
             resData[key].address,
-            resData[key].location
+            resData[key].lat,
+            resData[key].long
           )
         );
       }
@@ -121,7 +122,8 @@ export const addPlace = ({ title, selectedImage, selectedLocation }) => {
             title,
             imageUri: newPath,
             address,
-            location: selectedLocation,
+            lat: selectedLocation.lat,
+            long: selectedLocation.long,
             ownerId: userId,
           },
         });

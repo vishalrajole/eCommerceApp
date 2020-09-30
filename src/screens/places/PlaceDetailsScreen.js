@@ -12,9 +12,9 @@ const PlaceDetailsScreen = (props) => {
   const selectedPlace = useSelector((state) =>
     state.place.places.find((place) => place.id === id)
   );
-  console.log("selectedPlace: ", selectedPlace);
+
   return (
-    <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+    <ScrollView contentContainerStyle={{ alignItems: "center", marginTop: 30 }}>
       <Image source={{ uri: selectedPlace.imageUri }} style={styles.image} />
       <View style={styles.locationContainer}>
         <View style={styles.addressContainer}>
@@ -23,7 +23,16 @@ const PlaceDetailsScreen = (props) => {
         <MapPreview
           style={styles.mapPreview}
           location={{ lat: selectedPlace.lat, long: selectedPlace.long }}
-        ></MapPreview>
+          onMapPreview={() => {
+            props.navigation.navigate("Map", {
+              readOnly: true,
+              initialLocation: {
+                lat: selectedPlace.lat,
+                long: selectedPlace.long,
+              },
+            });
+          }}
+        />
       </View>
     </ScrollView>
   );
@@ -40,7 +49,7 @@ const styles = StyleSheet.create({
   mapPreview: {
     width: "100%",
     maxWidth: 350,
-    height: 300,
+    height: 250,
     borderBottomRightRadius: 10,
     borderBottomLeftRadius: 10,
   },
@@ -49,6 +58,16 @@ const styles = StyleSheet.create({
     minHeight: 300,
     width: "100%",
     backgroundColor: "#ccc",
+    maxWidth: 350,
+    borderBottomRightRadius: 10,
+    borderBottomLeftRadius: 10,
+    shadowColor: "black",
+    shadowOpacity: 0.26,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 5,
+    backgroundColor: "white",
+    borderRadius: 10,
   },
   locationContainer: {
     marginVertical: 20,

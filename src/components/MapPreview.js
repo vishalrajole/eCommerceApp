@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Image, TouchableOpacity } from "react-native";
 import { googleApiKey } from "../env";
 
 const MapPreview = (props) => {

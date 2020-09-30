@@ -87,11 +87,6 @@ const NewPlaceScreen = ({ navigation }) => {
     }
     setIsLoading(true);
     setError(null);
-    console.log(
-      "inside NewPlace savePlaceHandler:",
-      selectedImage,
-      selectedLocation
-    );
     try {
       await dispatch(
         addPlace({
