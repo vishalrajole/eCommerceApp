@@ -15,6 +15,7 @@ const PlacesListScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const places = useSelector((state) => state.place.places);
+  console.log("places: ", places);
   const dispatch = useDispatch();
 
   const getPlaces = async () => {
@@ -70,14 +71,15 @@ const PlacesListScreen = ({ navigation }) => {
       renderItem={(itemData) => (
         <PlaceItem
           onSelect={() => {
+            console.log("itemData.item.address: ", itemData.item);
             navigation.navigate("PlaceDetails", {
               title: itemData.item.title,
               id: itemData.item.id,
             });
           }}
           image={itemData.item.imageUri}
+          address={itemData.item.address}
           title={itemData.item.title}
-          address={null}
         />
       )}
     />

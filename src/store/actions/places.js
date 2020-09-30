@@ -32,6 +32,7 @@ export const fetchPlaces = () => {
         throw new Error("Something went wrong!");
       }
       const resData = await response.json();
+      console.log("resData: ", resData);
       const places = [];
       for (const key in resData) {
         places.push(
@@ -39,7 +40,9 @@ export const fetchPlaces = () => {
             key,
             resData[key].title,
             resData[key].ownerId,
-            resData[key].imageUri
+            resData[key].imageUri,
+            resData[key].address,
+            resData[key].location
           )
         );
       }
@@ -84,7 +87,7 @@ export const addPlace = ({ title, selectedImage, selectedLocation }) => {
           },
           body: JSON.stringify({
             title,
-            selectedImage,
+            imageUri: selectedImage,
             address,
             lat: selectedLocation.lat,
             long: selectedLocation.long,
