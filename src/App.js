@@ -3,10 +3,29 @@ import { StyleSheet } from "react-native";
 import { Provider } from "react-redux";
 import { AppLoading } from "expo";
 import { useFonts } from "expo-font";
+import { initDB, destroyDB } from "./helpers/db";
 import configureStore from "./store/configure-store";
 import AppNavigator from "./navigation/AppNavigator";
 
 const store = configureStore();
+
+/* destroys sqlite db */
+// destroyDB()
+//   .then(() => {
+//     console.log("destroyed database");
+//   })
+//   .catch((err) => {
+//     console.log("db destroy failed ", err);
+//   });
+
+/* initialised sqlite db */
+initDB()
+  .then(() => {
+    console.log("initialised database");
+  })
+  .catch((err) => {
+    console.log("db initialised failed ", err);
+  });
 
 const App = () => {
   let [fontsLoaded] = useFonts({

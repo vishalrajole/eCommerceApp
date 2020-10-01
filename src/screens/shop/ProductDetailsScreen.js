@@ -25,10 +25,7 @@ const ProductDetailsScreen = (props) => {
 
   return (
     <ScrollView>
-      <Image
-        source={{ uri: selectedProduct.imageUrl }}
-        style={styles.image}
-      ></Image>
+      <Image source={{ uri: selectedProduct.imageUrl }} style={styles.image} />
       <View style={styles.actions}>
         <Button
           color={Colors.primary}
@@ -36,7 +33,7 @@ const ProductDetailsScreen = (props) => {
           onPress={() => {
             dispatch(addToCart(selectedProduct));
           }}
-        ></Button>
+        />
       </View>
       <Text style={styles.price}>${parseFloat(selectedProduct.price)}</Text>
       <Text style={styles.description}>{selectedProduct.description}</Text>

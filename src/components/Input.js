@@ -54,6 +54,7 @@ const Input = (props) => {
     }
     dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid });
   };
+
   const onBlurHandler = () => {
     dispatch({ type: INPUT_BLUR });
   };
@@ -67,7 +68,7 @@ const Input = (props) => {
         value={inputState.value}
         onChangeText={textChangeHandler}
         onBlur={onBlurHandler}
-        autoCapitalize={"sentences"}
+        autoCapitalize={props.autoCapitalize}
       />
       {!inputState.isValid && inputState.touched && (
         <View style={styles.errorContainer}>
@@ -91,6 +92,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderBottomColor: "#ccc",
     borderBottomWidth: 1,
+    marginBottom: 15,
   },
   errorContainer: {
     marginVertical: 5,
