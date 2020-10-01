@@ -6,10 +6,36 @@
     "slug": "eCommerceApp",
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
+    "platforms": ["android", "ios"],
+    "githubUrl": "https://github.com/vishalrajole/eCommerceApp",
+    "orientation": "portrait",
+    "icon": "./src/assets/app-icon.png",
     "splash": {
       "image": "./src/assets/splash.png",
       "resizeMod": "contain",
       "backgrounColor": "#ffffff"
+    },
+    "android": {
+      "package": "com.vishal.ecommerceapp",
+      "versionCode": 1,
+      "permissions": [
+        "CAMERA",
+        "ACCESS_FINE_LOCATION",
+        "WRITE_EXTERNAL_STORAGE"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDShoFb5hFfTtUZzyGMX0L5qosShca_LN8"
+        }
+      }
+    },
+
+    "ios": {
+      "bundleIdentifier": "com.vishal.ecommerceapp",
+      "buildNumber": "1.0.0"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
     }
   }
 }
