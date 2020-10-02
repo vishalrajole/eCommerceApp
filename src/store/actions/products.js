@@ -1,3 +1,6 @@
+import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
+
 import Product from "../../__mocks__/product";
 export const DELETE_PRODUCT = "DELETE_PRODUCT";
 export const CREATE_PRODUCT = "CREATE_PRODUCT";
@@ -63,6 +66,22 @@ export const deleteProduct = (productId) => {
 
 export const createProduct = ({ title, description, imageUrl, price }) => {
   return async (dispatch, getState) => {
+    let pushToken;
+
+    let permissionsStatus = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS
+    );
+
+    if (permissionsStatus.status != "granted") {
+      permissionsStatus = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+    }
+
+    if (permissionsStatus.status != "granted") {
+      pushToken = null;
+    } else {
+      pushToken = (await Notifications.getExpoPushTokenAsync()).data;
+    }
+
     const token = getState().auth.token;
     const userId = getState().auth.userId;
     const response = await fetch(
@@ -78,6 +97,7 @@ export const createProduct = ({ title, description, imageUrl, price }) => {
           imageUrl,
           price,
           ownerId: userId,
+          pushToken: pushToken,
         }),
       }
     );
